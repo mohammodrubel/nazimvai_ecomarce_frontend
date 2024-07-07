@@ -1,0 +1,105 @@
+.navigation{
+  padding: 20px;
+  background: white;
+  position: sticky;
+  top: 0;
+  position: relative;
+}
+.activeNavigation{
+  padding: 20px;
+  background: #FEE8EA;
+  position: sticky;
+  top: 0;
+}
+.meghaMenu {
+  position: fixed;
+  top: 60px;
+  background: white;
+  padding: 10px 0px;
+  width: 100%;
+  margin: 0 auto;
+  left: 0;
+  right: 0; /* Ensures it stays centered */
+}
+.subul{
+  margin: 0 auto;
+}
+.subul li {
+  transition: 0.3s ease-in;
+}
+.subul li:hover  {
+  transition: 0.3s ease-in;
+  margin-left: 10px;
+}
+.shopSubmenu {
+  /* position: relative;  */
+  z-index: 0; /* Ensure .shopSubmenu has a lower z-index */
+}
+
+
+
+
+
+
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.imageContainer:hover .hiddenContent {
+  opacity: 1;
+  transform: translateY(-30px);
+}
+
+.imageContainer:hover img {
+  transition: all 0.4s ease-in;
+  filter: blur(4px); 
+}
+
+.content {
+  padding: 10px;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0; 
+  width: 100%;
+  transform: translateY(-50%,-50%);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s ease-in;
+}
+
+
+
+
+
+
+
+
+
+
+
+.meghaMenu {
+  position: fixed;
+  background-color: white; /* Example background color */
+  padding: 10px;
+  opacity: 0; /* Initially hide .meghaMenu */
+  transform: translateY(10px); /* Initial transformation to hide off-screen */
+  z-index: 1; /* Higher z-index to bring .meghaMenu above other content */
+  transition: opacity 0.4s ease-in, transform 0.4s ease-in; /* Apply transition to opacity and transform */
+  visibility: hidden; /* Hide but still take up space */
+}
+
+.singleShopSubmenu:hover .meghaMenu {
+  opacity: 1; /* Show .meghaMenu on hover */
+  transform: translateY(0); /* Slide .meghaMenu into view */
+  visibility: visible; /* Make .meghaMenu visible */
+}

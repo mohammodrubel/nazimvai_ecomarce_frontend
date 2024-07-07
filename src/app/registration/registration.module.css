@@ -1,0 +1,8 @@
+.background{
+    background: linear-gradient(rgba(0, 0, 0, 0.788),rgba(0, 0, 0, 0.788)),url(../../assets/authbg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #000000ab;
+}
