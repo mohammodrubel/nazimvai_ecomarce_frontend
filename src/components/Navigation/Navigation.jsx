@@ -6,9 +6,11 @@ import CategorySubMenu from './CategorySubMenu';
 import ShopSubMenu from './ShopSubMenu';
 import NavbarUserInformation from '../userActivity/NavbarUserInformation';
 
-function Navigation() {
-    const [scrollSize, setScrollSize] = useState(0);
 
+
+function Navigation() {
+    const [scrollSize, setScrollSize] = useState(0)
+  
     useEffect(() => {
         const handleScroll = () => {
             setScrollSize(window.scrollY);

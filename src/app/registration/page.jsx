@@ -3,18 +3,25 @@ import { Form, Input, Button, Radio } from 'antd';
 import style from './registration.module.css';
 import Link from 'next/link';
 import { useRegistrationMutation } from '@/lib/fetchers/Authintication/authApi';
+import { toast, Toaster } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
   const [register, { isError, isLoading, data, error }] = useRegistrationMutation();
-
+  const router = useRouter()
   const onFinish = async (values) => {
     try {
-      const res = await register(values);
-      alert(res?.data.message)
+      const res = await register(values).unwrap();
+      toast.success(res?.message)
+      router.push('/login')
     } catch (err) {
-      console.error('Registration error:', err);
+      console.error(err?.data?.message);
     }
   };
+
+  if(error?.data?.success === false){
+    toast.error(error?.data?.message)
+  }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -94,6 +101,7 @@ const RegistrationForm = () => {
           </small>
         </Form>
       </div>
+      <Toaster richColors position="top-center" />
     </div>
   );
 };

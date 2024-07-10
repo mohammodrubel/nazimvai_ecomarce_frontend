@@ -7,21 +7,32 @@ import { useLoginMutation } from '@/lib/fetchers/Authintication/authApi';
 import { setUsers } from '@/lib/fetchers/Authintication/authSlice';
 import { useDispatch } from 'react-redux';
 import { DecodedData } from '@/utils/DecodedData';
+import { toast, Toaster } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 
 
 const LoginForm = () => {
   const [loginInfo, { isError, isLoading, data }] = useLoginMutation()
+  const router = useRouter()
   const dispathch = useDispatch()
   const onFinish = async (values) => {
-      const res = await loginInfo(values).unwrap();
+      try{
+        const res = await loginInfo(values).unwrap();
+      const user = DecodedData (res?.data?.accessToken)
+      dispathch(setUsers({user:user,token:res?.data?.accessToken}))
+      toast.success(res?.message)
+      router.push('/')
+      }
+      catch(err){
+        toast.error(err?.data?.message)
+      }
   };
 
-  console.log(data)
+ 
  
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  const onFinishFailed = (errorInfo) => {console.log('Failed:', errorInfo);};
 
   return (
     <div className={`${style.background} min-h-screen flex items-center justify-center`}>
@@ -72,6 +83,7 @@ const LoginForm = () => {
           </small>
         </Form>
       </div>
+      <Toaster richColors position="top-center" />
     </div>
   );
 };
