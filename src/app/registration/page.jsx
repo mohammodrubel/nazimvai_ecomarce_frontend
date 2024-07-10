@@ -1,58 +1,101 @@
-import { Button } from 'antd';
-import React from 'react';
+"use client"
+import { Form, Input, Button, Radio } from 'antd';
 import style from './registration.module.css';
 import Link from 'next/link';
+import { useRegistrationMutation } from '@/lib/fetchers/Authintication/authApi';
 
-const LoginForm = () => {
+const RegistrationForm = () => {
+  const [register, { isError, isLoading, data, error }] = useRegistrationMutation();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await register(values);
+      alert(res?.data.message)
+    } catch (err) {
+      console.error('Registration error:', err);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
-    <div className={`${style.background} min-h-screen flex items-center justify-center `}>
-      <div className="bg-[#000000ab] p-8 shadow-md rounded-md w-96">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Registration</h2>
-        <form className="space-y-4 ">
-          <div>
-            <label htmlFor="username" className="text-white block text-sm font-medium ">
-              Username
-            </label>
-            <input
+    <div className={`${style.background} min-h-screen flex items-center justify-center`}>
+      <div className="bg-white p-8 shadow-md rounded-md w-96">
+        <h2 className="text-2xl font-bold text-[#663130] mb-6 text-center">Registration</h2>
+        <Form
+          name="registration"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          className="space-y-4"
+        >
+          <Form.Item
+            name="name"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input
+              size="large"
               type="text"
-              id="username"
-              name="username"
-              className="mt-1 border bg-transparent text-white outline-none block w-full rounded-md shadow-sm  p-2"
-              required
+              placeholder="Name"
+              className="mt-1 border bg-transparent outline-none block w-full rounded-md shadow-sm p-2"
             />
-          </div>
-          <div>
-            <label htmlFor="Email" className="text-white block text-sm font-medium ">
-              Email
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="email"
-              className="mt-1 border bg-transparent text-white outline-none block w-full rounded-md shadow-sm  p-2"
-              required
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
+          >
+            <Input
+              size="large"
+              type="email"
+              placeholder="Email"
+              className="mt-1 border bg-transparent  outline-none block w-full rounded-md shadow-sm p-2"
             />
-          </div>
-          <div>
-            <label htmlFor="password" className="text-white block text-sm font-medium ">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="mt-1 border bg-transparent text-white outline-none block w-full rounded-md shadow-sm  p-2"
-              required
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password
+              size="large"
+              placeholder="Password"
+              className="mt-1 border bg-transparent outline-none w-full rounded-md shadow-sm p-2"
             />
-          </div>
-          <div>
-            <div className='text-center'><button>Submit</button></div>
-          </div>
-          <small className='text-center text-white'>if you have already account please <Link className='font-bold text-[#FFC0CB]' href='/login'>Login</Link></small>
-        </form>
+          </Form.Item>
+
+          <Form.Item
+            name="gender"
+            rules={[{ required: true, message: 'Please select your gender!' }]}
+          >
+            <Radio.Group className="text-white">
+              <Radio value="male" >Male</Radio>
+              <Radio value="female" >Female</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item className="text-center">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ background: '#663130', padding: '0px 40px', color: 'white', fontWeight: 'bold', fontSize: '18px' }}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Registering...' : 'Register'}
+            </Button>
+          </Form.Item>
+
+          {isError && <div className="text-red-500 text-center mt-2">Registration failed. Please try again.</div>}
+
+          <small className="text-center ">
+            If you already have an account, please <Link className="font-bold" href="/login">Login</Link>
+          </small>
+        </Form>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default RegistrationForm;

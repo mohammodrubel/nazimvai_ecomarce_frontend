@@ -4,6 +4,7 @@ import style from './Navigation.module.css';
 import { useState, useEffect } from 'react';
 import CategorySubMenu from './CategorySubMenu';
 import ShopSubMenu from './ShopSubMenu';
+import NavbarUserInformation from '../userActivity/NavbarUserInformation';
 
 function Navigation() {
     const [scrollSize, setScrollSize] = useState(0);
@@ -22,7 +23,7 @@ function Navigation() {
     }, []);
 
     return (
-        <div className={`${style.navigation} relative ${scrollSize > 300 ? style.activeNavigation : ''}`}>
+        <div className={`${style.navigation} relative z-50 ${scrollSize > 300 ? style.activeNavigation : ''}`}>
             <div className='container mx-auto'>
                 <div className='flex justify-between items-center'>
                     <div className='text-2xl'>LOGO</div>
@@ -45,11 +46,7 @@ function Navigation() {
                         </ul>
                     </div>
                     <div>
-                        <ul className='flex gap-5'>
-                            <li><i className="text-[#BC147C] text-[20px] fa-solid fa-cart-shopping"></i></li>
-                            <li><i className="text-[#BC147C] text-[20px] fa-solid fa-heart"></i></li>
-                            <li><i className="text-[#BC147C] text-[20px] fa-solid fa-user"></i></li>
-                        </ul>
+                        <NavbarUserInformation/>
                     </div>
                 </div>
             </div>

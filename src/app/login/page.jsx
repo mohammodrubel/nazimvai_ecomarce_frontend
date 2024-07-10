@@ -1,42 +1,76 @@
+"use client"
 import React from 'react';
+import { Form, Input, Button } from 'antd';
 import style from './login.module.css';
 import Link from 'next/link';
+import { useLoginMutation } from '@/lib/fetchers/Authintication/authApi';
+import { setUsers } from '@/lib/fetchers/Authintication/authSlice';
+import { useDispatch } from 'react-redux';
+import { DecodedData } from '@/utils/DecodedData';
+
 
 const LoginForm = () => {
+  const [loginInfo, { isError, isLoading, data }] = useLoginMutation()
+  const dispathch = useDispatch()
+  const onFinish = async (values) => {
+      const res = await loginInfo(values).unwrap();
+  };
+
+  console.log(data)
+ 
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
-    <div className={`${style.background} min-h-screen flex items-center justify-center `}>
-      <div className="bg-[#000000ab] p-8 shadow-md rounded-md w-96">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Login</h2>
-        <form className="space-y-4 ">
-          <div>
-            <label htmlFor="username" className="text-white block text-sm font-medium ">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="mt-1 border bg-transparent text-white outline-none block w-full rounded-md shadow-sm  p-2"
-              required
+    <div className={`${style.background} min-h-screen flex items-center justify-center`}>
+      <div className="bg-white p-8 shadow-md rounded-md w-96">
+        <h2 className="text-2xl font-bold text-[#663130] mb-6 text-center">Login</h2>
+        <Form
+          name="login"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          className="space-y-4"
+        >
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
+          >
+            <Input
+              size='large'
+              type="email"
+              placeholder="Email"
+              className="mt-1 border bg-transparent outline-none block w-full rounded-md shadow-sm p-2"
             />
-          </div>
-          <div>
-            <label htmlFor="password" className="text-white block text-sm font-medium ">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="mt-1 border bg-transparent text-white outline-none block w-full rounded-md shadow-sm  p-2"
-              required
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password
+              size="large"
+              placeholder="Password"
+              className="mt-1 border bg-transparent outline-none  w-full rounded-md shadow-sm "
             />
-          </div>
-          <div>
-          <div className='text-center'><button>Login</button></div>
-          </div>
-          <small className='text-center text-white'>if you have no account Please <Link className='font-bold text-[#FFC0CB]' href='/registration'>Create Account</Link></small>
-        </form>
+          </Form.Item>
+          <Form.Item className="text-center">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ background: '#663130', padding: '0px 40px', color: 'white', fontWeight: 'bold', fontSize: '18px' }}
+              className='border px-5'
+            >
+              Login
+            </Button>
+          </Form.Item>
+
+          <small className='text-center'>
+            If you have no account, please <Link className='font-bold' href='/registration'>Create Account</Link>
+          </small>
+        </Form>
       </div>
     </div>
   );
