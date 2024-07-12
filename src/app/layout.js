@@ -1,8 +1,6 @@
 // app/layout.js
 import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import ReduxProvider from "@/lib/ReduxProvider";
 
 export const metadata = {

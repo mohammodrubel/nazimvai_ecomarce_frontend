@@ -11,7 +11,7 @@ export const productApi = RootApi.injectEndpoints({
     }),
     addNewProducts:builder.mutation({
       query:(data)=>({
-        url:'/products/create-product',
+        url:'/product/add-product',
         method:'POST',
         body:data
       }),
@@ -32,4 +32,4 @@ export const productApi = RootApi.injectEndpoints({
   }),
 });
 
-export const { useFetchAllProductsQuery,useUpdateProductStocksMutation ,useAddNewProductsMutation,useFetchSingleProductsQuery} = productApi;
+export const {useAddNewProductsMutation} = productApi;
