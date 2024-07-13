@@ -18,7 +18,7 @@ import {
   UsergroupDeleteOutlined,
   UserAddOutlined,
   UserSwitchOutlined,
-  UsergroupAddOutlined
+  UsergroupAddOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 
@@ -68,7 +68,7 @@ const menuItems = [
       {
         key: 'currentStock',
         icon: <DatabaseOutlined />,
-        label: <Link href="/dashboard/stock/current">Current Stock</Link>,
+        label: <Link href="/dashboard/current-stock">Current Stock</Link>,
       },
       {
         key: 'stockHistory',
@@ -102,16 +102,6 @@ const menuItems = [
         icon: <DeleteOutlined />,
         label: <Link href="/dashboard/products/delete">Delete Product</Link>,
       },
-      {
-        key: 'category',
-        icon: <PictureOutlined />,
-        label: <Link href="/dashboard/category">Category</Link>,
-      },
-      {
-        key: 'brand',
-        icon: <PictureOutlined />,
-        label: <Link href="/dashboard/brand">Brand</Link>,
-      },
     ],
   },
   {
@@ -133,6 +123,40 @@ const menuItems = [
         key: 'cancelledOrders',
         icon: <CloseCircleOutlined />,
         label: <Link href="/dashboard/orders/cancelled">Cancelled Orders</Link>,
+      },
+    ],
+  },
+  {
+    key: 'category',
+    icon: <PictureOutlined />,
+    label: 'Category',
+    children: [
+      {
+        key: 'viewCategories',
+        icon: <PictureOutlined />,
+        label: <Link href="/dashboard/view-category">View Categories</Link>,
+      },
+      {
+        key: 'createCategory',
+        icon: <PlusOutlined />,
+        label: <Link href="/dashboard/category">Create Category</Link>,
+      },
+    ],
+  },
+  {
+    key: 'brand',
+    icon: <PictureOutlined />,
+    label: 'Brand',
+    children: [
+      {
+        key: 'createBrand',
+        icon: <PlusOutlined />,
+        label: <Link href="/dashboard/brand">Create Brand</Link>,
+      },
+      {
+        key: 'viewBrands',
+        icon: <PictureOutlined />,
+        label: <Link href="/dashboard/view-brand">View Brands</Link>,
       },
     ],
   },

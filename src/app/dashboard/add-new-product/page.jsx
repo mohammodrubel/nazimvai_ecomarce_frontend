@@ -57,6 +57,8 @@ const Page = () => {
   );
 
   return (
+    <>
+    <h3 className="font-bold text-2xl px-2">Add New Product</h3>
     <Form onFinish={onSubmit}>
       <div className="mx-5 mt-5 mb-5">
         <Row justify="center" align="middle">
@@ -111,6 +113,7 @@ const Page = () => {
         </Button>
       </Form.Item>
     </Form>
+    </>
   );
 };
 

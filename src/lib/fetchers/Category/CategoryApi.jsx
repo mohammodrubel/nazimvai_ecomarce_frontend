@@ -4,7 +4,7 @@ export const CategoryApi = RootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllCategory: builder.query({
       query: () => '/category/get-all-categories',
-      // providesTags:['category']
+      providesTags:['category']
     }),
     
     addNewCategory:builder.mutation({
@@ -13,7 +13,7 @@ export const CategoryApi = RootApi.injectEndpoints({
         method:'POST',
         body:data
       }),
-      // invalidatesTags:['category'],
+      invalidatesTags:['category'],
     }),
    
   }),

@@ -70,7 +70,9 @@ function Page() {
     
 
     return (
-        <div className='md:w-[50%] mx-auto sm:w-[80%] w-[95%]'>
+        <>
+            <h3 className="font-bold text-2xl px-2">Add New Category</h3>
+            <div className='md:w-[50%] mx-auto sm:w-[80%] w-[95%]'>
             <Form onFinish={onSubmit}>
             <div className="mx-5 mt-5 mb-5">
                 <Row justify="center" align="middle">
@@ -110,6 +112,8 @@ function Page() {
             </Form.Item>
         </Form>
         </div>
+        </>
+       
     );
 }
 

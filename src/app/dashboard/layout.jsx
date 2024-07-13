@@ -6,7 +6,7 @@ import DashbrodNavbar from '@/components/DashbrodNavbar/DashbrodNavbar';
 import menuItems from '@/components/DashbrodNavbar/DashbrodNavbarMenu';
 import { Toaster } from 'sonner';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const Page = ({ children }) => {
   return (
@@ -16,10 +16,8 @@ const Page = ({ children }) => {
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
-          console.log(broken);
         }}
         onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
         }}
       >
         <div className="demo-logo-vertical" />

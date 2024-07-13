@@ -71,6 +71,8 @@ function Page() {
     
 
     return (
+        <>
+        <h3 className="font-bold text-2xl px-2">Add New Brand</h3>
         <div className='md:w-[50%] mx-auto sm:w-[80%] w-[95%]'>
             <Form onFinish={onSubmit}>
             <div className="mx-5 mt-5 mb-5">
@@ -109,11 +111,13 @@ function Page() {
             </Form.Item>
             <Form.Item className='text-center'>
                 <Button loading={isLoading} type="dashed" size="large" htmlType="submit">
-                    Create New Category
+                    Create New Brand
                 </Button>
             </Form.Item>
         </Form>
         </div>
+        </>
+        
     );
 }
 
