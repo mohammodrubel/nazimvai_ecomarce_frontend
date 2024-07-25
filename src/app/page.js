@@ -15,7 +15,6 @@ export default function Home() {
       <Category/>
       <SkinCareBanner/>
       <ProductCard/>
-      <Toaster position="top-center" />
     </ReduxProvider>
   );
 }

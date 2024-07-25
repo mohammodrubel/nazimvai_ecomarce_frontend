@@ -31,7 +31,7 @@ function Category() {
                     style={{ borderRadius: '50%' }}
                 />
                 <div className={style.category}>
-                    <div className={style.categoryTitle}>{item?.name}</div>
+                    <div className={`${style.categoryTitle} text-center`}>{item?.name}</div>
                 </div>
             </div>
         ));

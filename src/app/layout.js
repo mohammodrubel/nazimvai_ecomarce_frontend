@@ -2,6 +2,7 @@
 import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import ReduxProvider from "@/lib/ReduxProvider";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "Create Next App",
@@ -16,11 +17,13 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Bilbo+Swash+Caps&display=swap" rel="stylesheet"></link>
       </head>
       <body style={{ fontFamily: '"Work Sans", sans-serif' }}>
         <ReduxProvider>
           <AntdRegistry>
             {children}
+            <Toaster position="top-center" richColors />
           </AntdRegistry>
         </ReduxProvider>
       </body>

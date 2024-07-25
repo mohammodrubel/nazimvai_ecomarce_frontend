@@ -8,6 +8,8 @@ import Error from '../Error/Error';
 import Image from 'next/image';
 import style from './ProductCard.module.css';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
 
 function ProductCard() {
     const { isLoading, isError, data } = useFetchAllProductsQuery();
@@ -15,10 +17,17 @@ function ProductCard() {
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
+    const [singleProductData, setSingleProductData] = useState({})
+    const dispatch = useDispatch()
 
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
+
+    const handelAddToCart = (product)=>{
+        dispatch(addProduct(product))
+       
+    }
 
     let content = null;
 
@@ -40,8 +49,8 @@ function ProductCard() {
                     <div style={{ width: "300px", margin: '0 auto' }}>
                         <ul className={`${style.iconul} flex flex-col justify-center items-center gap-8 rounded`}>
                             <li><i onClick={addToWishlist} className="text-[20px] text-white fa-regular fa-heart"></i></li>
-                            <li><i className="text-[20px] text-white fa-solid fa-cart-shopping"></i></li>
-                            <li onClick={() => { setOpen(true); setSelectedImages(item.images); setTitle(item.name); setSelectImage(0); }}><i className="text-[20px] text-white fa-solid fa-eye"></i></li>
+                            <li onClick={()=>handelAddToCart(item)}><i className="text-[20px] text-white fa-solid fa-cart-shopping"></i></li>
+                            <li onClick={() => { setOpen(true); setSingleProductData(item); setSelectedImages(item.images); setTitle(item.name); setSelectImage(0); }}><i className="text-[20px] text-white fa-solid fa-eye"></i></li>
                         </ul>
                     </div>
                 </div>
@@ -56,12 +65,14 @@ function ProductCard() {
 
     return (
         <div className='container mx-auto'>
-            <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-5'>Recent Product</h3>
+            <div className='text-center mb-5'>
+            <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
+            <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
+            </div>
             <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3'>
                 {content}
             </div>
             <Modal
-                title={<div className='text-center py-3 text-[20px]'>{title} <hr /> </div>}
                 centered
                 open={open}
                 onOk={() => setOpen(false)}
@@ -81,7 +92,17 @@ function ProductCard() {
                         <Image src={selectedImages[selectImage]} width={300} height={300} alt={`Modal Image ${selectImage}`} />
                     </div>
                     <div>
-                        
+                        <h2 className='text-2xl sm:text-4xl text-[#663130] font-bold'>{title}</h2>
+                        <div className='flex gap-4'>
+                            <p className={`font-bold ${singleProductData?.in_stock === 0 ? 'text-red-500' : 'text-gray-600'}`}>In Stock - <span>{singleProductData?.in_stock}</span></p>
+                            <p className='font-bold text-gray-500'>weight - {singleProductData?.weight}</p>
+                        </div>
+                        <h3 className="text-2xl">Price : {singleProductData.price}</h3>
+                        <p className='text-gray-400'>{singleProductData?.desc}</p>
+                        <div className='flex gap-5 mt-5'>
+                            <button onClick={()=>handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
+                            <button disabled={singleProductData.in_stock === 0}className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
+                        </div>
                     </div>
                 </div>
             </Modal>

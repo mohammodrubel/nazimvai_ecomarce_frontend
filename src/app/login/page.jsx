@@ -83,7 +83,6 @@ const LoginForm = () => {
           </small>
         </Form>
       </div>
-      <Toaster richColors position="top-center" />
     </div>
   );
 };

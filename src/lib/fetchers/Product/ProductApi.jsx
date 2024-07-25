@@ -17,18 +17,6 @@ export const productApi = RootApi.injectEndpoints({
       }),
       invalidatesTags:['product'],
     }),
-    updateProductStocks: builder.mutation({
-      query: (data) => {
-        console.log(data)
-        const totalStock = data.totalStock
-        return {
-          url: `/products/updatestocks/${data.id}`,
-          method: 'PUT',
-          body: {totalStock}
-        }
-      },
-      invalidatesTags: ['product'],
-    }),
   }),
 });
 

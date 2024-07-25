@@ -101,7 +101,6 @@ const RegistrationForm = () => {
           </small>
         </Form>
       </div>
-      <Toaster richColors position="top-center" />
     </div>
   );
 };
