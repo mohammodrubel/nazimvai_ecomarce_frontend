@@ -1,17 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Modal } from 'antd';
+import { InputNumber, Button, Input, Modal } from 'antd';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
 import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import Image from 'next/image';
 import style from './ProductCard.module.css';
 import { toast } from 'sonner';
-import { useDispatch } from 'react-redux';
-import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
 
 function ProductCard() {
+    const currentCart = useSelector((state) => state?.products?.cartItem)
     const { isLoading, isError, data } = useFetchAllProductsQuery();
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
@@ -24,21 +25,23 @@ function ProductCard() {
         toast.success('Added to wishlist');
     };
 
-    const handelAddToCart = (product)=>{
+    const handelAddToCart = (product) => {
         dispatch(addProduct(product))
-       
+
     }
 
     let content = null;
 
     if (isLoading) {
         content = <Loading />;
-    } else if (isError) {
+    }
+    if (!isLoading && isError) {
         content = <Error text="Something went wrong" />;
-    } else if (!data || data?.data?.length === 0) {
+    }
+    if (!isLoading && !isError && !data || data?.data?.length === 0) {
         content = <Error text="No Data Found" />;
     } else {
-        content = data.data.map((item, index) => (
+        content = data?.data?.map((item, index) => (
             <div key={index}>
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
@@ -49,7 +52,7 @@ function ProductCard() {
                     <div style={{ width: "300px", margin: '0 auto' }}>
                         <ul className={`${style.iconul} flex flex-col justify-center items-center gap-8 rounded`}>
                             <li><i onClick={addToWishlist} className="text-[20px] text-white fa-regular fa-heart"></i></li>
-                            <li onClick={()=>handelAddToCart(item)}><i className="text-[20px] text-white fa-solid fa-cart-shopping"></i></li>
+                            <li onClick={() => handelAddToCart(item)}><i className="text-[20px] text-white fa-solid fa-cart-shopping"></i></li>
                             <li onClick={() => { setOpen(true); setSingleProductData(item); setSelectedImages(item.images); setTitle(item.name); setSelectImage(0); }}><i className="text-[20px] text-white fa-solid fa-eye"></i></li>
                         </ul>
                     </div>
@@ -63,11 +66,18 @@ function ProductCard() {
         ));
     }
 
+    const increment = (product) => {
+        dispatch(addProduct(product))
+    }
+    const decrement = (product) => {
+        dispatch(decrementQuantity(product))
+    }
+
     return (
         <div className='container mx-auto'>
             <div className='text-center mb-5'>
-            <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
-            <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
+                <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
+                <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
             </div>
             <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3'>
                 {content}
@@ -99,9 +109,14 @@ function ProductCard() {
                         </div>
                         <h3 className="text-2xl">Price : {singleProductData.price}</h3>
                         <p className='text-gray-400'>{singleProductData?.desc}</p>
+                        <div className='flex gap-4 my-4 items-center'>
+                            <Button className='font-bold border-[#663130]' onClick={()=>increment(singleProductData)}>+</Button>
+                            <InputNumber disabled value={currentCart?.find((checkProduct) => checkProduct?._id === singleProductData?._id)?.quantity || 0}></InputNumber>
+                            <Button className='font-bold border-[#663130]' onClick={()=>decrement(singleProductData)}>-</Button>
+                        </div>
                         <div className='flex gap-5 mt-5'>
-                            <button onClick={()=>handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
-                            <button disabled={singleProductData.in_stock === 0}className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
+                            <button onClick={() => handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
+                            <button disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
                         </div>
                     </div>
                 </div>

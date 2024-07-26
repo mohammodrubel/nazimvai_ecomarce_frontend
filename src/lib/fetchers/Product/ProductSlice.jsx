@@ -14,7 +14,6 @@ export const ProductSlice = createSlice({
   initialState,
   reducers: {
     // add product 
-    // add to cart
     addProduct: (state, action) => {
       const existingProduct = state.cartItem.find(
         (item) => item._id === action.payload._id
@@ -34,8 +33,29 @@ export const ProductSlice = createSlice({
         toast.success("added to cart");
       }
     },
+
+
+    decrementQuantity: (state, action) => {
+      state.cartItem = state.cartItem.map(item => {
+        if (item?._id === action.payload?._id) {
+          if (item.quantity > 0) {
+            toast.warning("Decrementing quantity");
+            return {
+              ...item,
+              quantity: item.quantity - 1
+            };
+          } else {
+            return {
+              ...item,
+              quantity: 0
+            };
+          }
+        }
+        return item;
+      });
+    },
   }
 })
 
-export const { addProduct } = ProductSlice.actions
+export const { addProduct ,decrementQuantity } = ProductSlice.actions
 export default ProductSlice.reducer
