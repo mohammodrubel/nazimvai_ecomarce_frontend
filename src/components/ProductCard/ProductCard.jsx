@@ -10,6 +10,7 @@ import style from './ProductCard.module.css';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
+import Link from 'next/link';
 
 function ProductCard() {
     const currentCart = useSelector((state) => state?.products?.cartItem)
@@ -46,7 +47,7 @@ function ProductCard() {
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
                         <div key={imgIndex} className={style.img_single}>
-                            <Image src={img} width={300} height={300} className='mx-auto text-center' alt={`Image ${imgIndex}`} />
+                            <Link href={`/product/${item?._id}`}><Image src={img} width={300} height={300} className='mx-auto text-center' alt={`Image ${imgIndex}`} /></Link>
                         </div>
                     ))}
                     <div style={{ width: "300px", margin: '0 auto' }}>

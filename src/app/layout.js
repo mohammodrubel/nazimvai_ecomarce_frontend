@@ -3,6 +3,7 @@ import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import ReduxProvider from "@/lib/ReduxProvider";
 import { Toaster } from "sonner";
+import Navigation from "@/components/Navigation/Navigation";
 
 export const metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
       <body style={{ fontFamily: '"Work Sans", sans-serif' }}>
         <ReduxProvider>
           <AntdRegistry>
+            <Navigation />
             {children}
             <Toaster position="top-center" richColors />
           </AntdRegistry>

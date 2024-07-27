@@ -7,7 +7,7 @@ export const productApi = RootApi.injectEndpoints({
       providesTags:['product']
     }),
     fetchSingleProducts:builder.query({
-      query:(id)=>`/products/${id}`
+      query:(id)=>`/product/get-single-product/${id}`
     }),
     addNewProducts:builder.mutation({
       query:(data)=>({
@@ -20,4 +20,4 @@ export const productApi = RootApi.injectEndpoints({
   }),
 });
 
-export const {useAddNewProductsMutation,useFetchAllProductsQuery} = productApi;
+export const {useAddNewProductsMutation,useFetchAllProductsQuery,useFetchSingleProductsQuery} = productApi;
