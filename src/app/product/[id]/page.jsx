@@ -75,6 +75,7 @@ function Page() {
                     </div>
                   ))}
                 </div>
+                
               </div>
             </div>
             <div className="col-span-1 mx-auto md:col-span-4 lg:col-span-4">
