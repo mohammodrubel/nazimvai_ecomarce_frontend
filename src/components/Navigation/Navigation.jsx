@@ -28,8 +28,8 @@ function Navigation() {
         <div className={`${style.navigation} relative z-50 ${scrollSize > 300 ? style.activeNavigation : ''}`}>
             <div className='container mx-auto'>
                 <div className='flex justify-between items-center'>
-                    <div className='text-2xl'>LOGO</div>
-                    <div className='flex items-center gap-5'>
+                    <div className='mt-1 text-2xl mb-5'>LOGO</div>
+                    <div className={`${style.navMenu} flex items-center gap-5`}>
                         <ul className='flex  gap-5'>
                             <li className=''>
                                 <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Home</Link>
@@ -47,7 +47,7 @@ function Navigation() {
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    <div className='mx-5'>
                         <NavbarUserInformation/>
                     </div>
                 </div>

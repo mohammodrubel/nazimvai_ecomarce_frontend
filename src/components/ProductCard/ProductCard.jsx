@@ -21,7 +21,7 @@ function ProductCard() {
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({})
     const dispatch = useDispatch()
-
+    console.log(data)
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
@@ -73,6 +73,8 @@ function ProductCard() {
     const decrement = (product) => {
         dispatch(decrementQuantity(product))
     }
+
+    
 
     return (
         <div className='container mx-auto'>

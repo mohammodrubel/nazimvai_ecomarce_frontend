@@ -41,7 +41,7 @@ const Banner = () => (
     <>
         <div className="w-full">
             <div className="grid px-5 grid-cols-12 items-center">
-                <div className="slider-container col-span-12 md:col-span-8 mx-5">
+                <div className=" mt-5 slider-container col-span-12 md:col-span-8 mx-5">
                     <div className='container mx-auto'>
                         <Carousel 
                             autoplay={true} 
@@ -54,18 +54,18 @@ const Banner = () => (
                         >
                             {data.map((item, index) => (
                                 <div key={index}>
-                                    <Image src={item.img} width={1800} height={600} alt={item.title}/>
+                                    <Image src={item.img} width={1800} height={800} alt={item.title}/>
                                 </div>
                             ))}
                         </Carousel>
                     </div>
                 </div>
-                <div className="md:col-span-4 mx-2 col-span-12">
+                <div className=" mt-5 md:col-span-4 mx-2 col-span-12">
                     <div className="relative">
                         <div className={`${styles.overlay} flex justify-center items-center`}>
-                            <h1 className="text-white text-left text-4xl md:text-6xl">Discount {brand1.percent}</h1>
+                            <h1 className="text-white text-left text-4xl">Discount {brand1.percent}</h1>
                         </div>
-                        <Image src={brand1.img} width={1000} height={1000} className="w-full h-full object-cover" alt="brand-background" />
+                        <Image src={brand1.img} width={500} height={500} className="w-full h-full object-cover" alt="brand-background" />
                     </div>
                     <div className="relative py-2 px-2 z-10 bg-slate-200">
                         <h3 className="py-1 text-[#663130] text-2xl mx-3 uppercase font-bold">{brand1.title}</h3>
