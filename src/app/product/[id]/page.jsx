@@ -38,6 +38,7 @@ function Page() {
   } else if (!isLoading && isError) {
     content = <Error errorText="something went wrong" />;
   } else if (!isLoading && !isError && data?.data) {
+    console.log(data?.data)
     const mainData = data.data;
     content = (
       <>
@@ -106,6 +107,7 @@ function Page() {
       </>
     );
   }
+
 
   return <div className="w-full">{content}</div>;
 }

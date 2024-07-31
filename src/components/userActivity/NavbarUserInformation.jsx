@@ -41,7 +41,7 @@ function NavbarUserInformation() {
   return (
     <ul className='flex gap-10'>
       <li className='relative'>
-        <Link href="/add-cart-page"><i className="cursor-pointer text-[#663130] text-[20px] fa-solid fa-cart-shopping"></i>
+        <Link href="/product-cart"><i className="cursor-pointer text-[#663130] text-[20px] fa-solid fa-cart-shopping"></i>
         {totalQuantity > 0 && (
           <div className='absolute top-[-8px]'>
             <p className='absolute flex items-center bg-[#FF4D4F] text-white justify-center w-4 h-4 p-3 cursor-pointer rounded-full -top-4 left-4'>

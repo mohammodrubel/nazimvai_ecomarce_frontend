@@ -1,12 +1,12 @@
 .navigation{
-  padding: 20px;
+  padding: 10px;
   background: white;
   position: sticky;
   top: 0;
   position: relative;
 }
 .activeNavigation{
-  padding: 20px;
+  padding: 10px;
   background: #fffbfb;
   position: sticky;
   top: 0;
@@ -35,7 +35,36 @@
   /* position: relative;  */
   z-index: 0; /* Ensure .shopSubmenu has a lower z-index */
 }
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.navigation {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  transition: background-color 0.3s ease;
+}
+
+.activeNavigation {
+  background-color:rgba(255, 192, 203, 0.623);
+  animation: slideDown 0.5s ease forwards, fadeIn 0.5s ease forwards;
+}
 
 
 
