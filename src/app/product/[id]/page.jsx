@@ -42,21 +42,18 @@ function Page() {
     const mainData = data.data;
     content = (
       <>
-        <div className="py-10 md:px-10 sm:px-5 px-3 bg-slate-100 flex gap-4 font-bold">
-          <Breadcrumb
-          style={{fontSize:'18px'}}
-            items={[
-              {
-                title: <Link href="/">Home</Link>,
-              },
-              {
-                title: <Link href="/">OIL</Link>,
-              },
-              {
-                title: <p>{mainData?.name}</p>,
-              },
-            ]}
-          />
+        <div className="mt-20 md:px-10 sm:px-5 px-3 py-5 bg-slate-100 flex gap-4 font-bold">
+        <Breadcrumb style={{ fontSize: '18px' }} items={[
+            {
+              title: <Link href="/">Home</Link>,
+            },
+            {
+              title: <Link href="/oil">OIL</Link>,
+            },
+            {
+              title: mainData?.name,
+            },
+          ]} />
         </div>
         <div className="container mx-auto">
           <div className="grid grid-cols-12 ">
@@ -66,8 +63,8 @@ function Page() {
                   <AntdImage.PreviewGroup>
                     <AntdImage
                       src={mainData?.images[selectedImage]}
-                      width={300}
-                      height={300}
+                      width={400}
+                      height={500}
                       alt="single product image"
                     />
                   </AntdImage.PreviewGroup>

@@ -1,27 +1,33 @@
-'use client';
-
+"use client";
+import PageHeader from '@/components/PageHeader/PageHeader';
+import ShopFilter from '@/components/ShopFilter/ShopFilter';
+import { InputNumber, Modal, Slider, AutoComplete, Button } from 'antd';
 import React, { useState } from 'react';
-import { InputNumber, Button, Input, Modal } from 'antd';
+import style from './shop.module.css';
+import classNames from 'classnames';
+import { SearchOutlined } from '@ant-design/icons';
+import Loading from '@/components/Loading/Loading';
+import Error from '@/components/Error/Error';
+import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
-import Loading from '../Loading/Loading';
-import Error from '../Error/Error';
-import Image from 'next/image';
-import style from './ProductCard.module.css';
-import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
+import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
 import Link from 'next/link';
+import Image from 'next/image';
 
-function ProductCard() {
+
+function Page() {
     const currentCart = useSelector((state) => state?.products?.cartItem)
-    const { isLoading, isError, data } = useFetchAllProductsQuery();
+    const [shopFilterActive, setShopFilterActive] = useState(false);
+    const { isLoading, isError, data } = useFetchAllCategoryQuery();
+    const { isLoading:productLoading, isError:productError, data:productData } = useFetchAllProductsQuery();
+    const dispatch = useDispatch()
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({})
-    const dispatch = useDispatch()
-   
+    let content = null;
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
@@ -30,20 +36,25 @@ function ProductCard() {
         dispatch(addProduct(product))
 
     }
+    const increment = (product) => {
+        dispatch(addProduct(product))
+    }
+    const decrement = (product) => {
+        dispatch(decrementQuantity(product))
+    }
+    
 
-    let content = null;
-
-    if (isLoading) {
+    if (productLoading) {
         content = <Loading />;
     }
-    if (!isLoading && isError) {
+    if (!productLoading && productError) {
         content = <Error text="Something went wrong" />;
     }
-    if (!isLoading && !isError && !data || data?.data?.length === 0) {
+    if (!productLoading && !productError && !productData || productData?.data?.length === 0) {
         content = <Error text="No Data Found" />;
     } else {
-        content = data?.data?.map((item, index) => (
-            <div key={index}>
+        content = productData?.data?.map((item, index) => (
+            <div key={index} className='mt-5'>
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
                         <div key={imgIndex} className={style.img_single}>
@@ -67,22 +78,81 @@ function ProductCard() {
         ));
     }
 
-    const increment = (product) => {
-        dispatch(addProduct(product))
-    }
-    const decrement = (product) => {
-        dispatch(decrementQuantity(product))
-    }
+   
 
-    
+    let categoryOptions = [];
+    const [initialValue, setInitialValue] = useState([10,90])
+
+    if (isLoading) {
+        categoryOptions = <Loading />;
+    }
+    if (!isLoading && isError) {
+        categoryOptions = <Error errorText="Something went wrong" />;
+    }
+    if (!isLoading && !isError &&  data?.data.length === 0) {
+        categoryOptions = <Error errorText="No data found" />;
+    }
+    if (!isLoading && !isError &&  data?.data.length > 0) {
+        categoryOptions = data.data.map((item) => ({ value: item.name }));
+    }
+    const handleSearch = (value) => {
+        console.log(value);
+    };
 
     return (
-        <div className='container mx-auto'>
-            <div className='text-center mb-5'>
-                <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
-                <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
+        <>
+            <PageHeader title="SHOP" />
+            <div className='mt-20 container mx-auto'>
+                <div className='flex justify-between flex-wrap items-center'>
+                    {Array.isArray(categoryOptions) ? (
+                        <>
+                            <div className='mt-4'>
+                            <p className='text-gray-500'>Search Categories Or Product Name</p>
+                            <AutoComplete
+                                options={categoryOptions}
+                                placeholder="Search Categories Or Product Name"
+                                filterOption={(inputValue, option) =>
+                                    option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                                }
+                                style={{minWidth:'90%'}}
+                                size='large'
+                                onSearch={handleSearch}
+                            />
+                            </div>
+                            <div className='text-center mt-4'>
+                            <p className='text-gray-500'>Filter Your Price</p>
+                            <Slider
+                                range={{
+                                    editable: true,
+                                    minCount: 1,
+                                    maxCount: 5,
+                                }}
+                                style={{width:"250px"}}
+                                value={initialValue}
+                                onChange={setInitialValue}
+                            />
+                            </div>
+                        </>
+                    ) : (
+                        categoryOptions
+                    )}
+                    <Button
+                        onClick={() => setShopFilterActive(!shopFilterActive)}
+                        className='font-bold mt-4'
+                        type="dashed"
+                        size="large"
+                    >
+                        Filter Your Product
+                    </Button>
+                </div>
+                <div className={classNames({
+                    [style.shopFilter]: true,
+                    [style.shopFilterActive]: shopFilterActive
+                })}>
+                    <ShopFilter />
+                </div>
             </div>
-            <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3'>
+            <div className='grid grid-cols1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto'>
                 {content}
             </div>
             <Modal
@@ -124,8 +194,8 @@ function ProductCard() {
                     </div>
                 </div>
             </Modal>
-        </div>
+        </>
     );
 }
 
-export default ProductCard;
+export default Page;

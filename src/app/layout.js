@@ -4,6 +4,8 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import ReduxProvider from "@/lib/ReduxProvider";
 import { Toaster } from "sonner";
 import Navigation from "@/components/Navigation/Navigation";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export const metadata = {
   title: "Create Next App",
