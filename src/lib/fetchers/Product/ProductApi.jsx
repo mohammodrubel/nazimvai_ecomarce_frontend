@@ -3,21 +3,37 @@ import { RootApi } from "../api/apiSlice";
 export const productApi = RootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllProducts: builder.query({
-      query: (data) => `/product/get-all-products`,
-      providesTags:['product']
+      query: (args) => {
+        console.log('args', args);
+    
+        // Construct the query string from the args
+        const queryString = new URLSearchParams(
+          args.reduce((acc, { name, value }) => {
+            if (value) acc[name] = value;
+            return acc;
+          }, {})
+        ).toString();
+    
+        return {
+          url: `/product/get-all-products?${queryString}`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['product'],
     }),
-    fetchSingleProducts:builder.query({
-      query:(id)=>`/product/get-single-product/${id}`
+    
+    fetchSingleProduct: builder.query({
+      query: (id) => `/product/get-single-product/${id}`,
     }),
-    addNewProducts:builder.mutation({
-      query:(data)=>({
-        url:'/product/add-product',
-        method:'POST',
-        body:data
+    addNewProduct: builder.mutation({
+      query: (data) => ({
+        url: '/product/add-product',
+        method: 'POST',
+        body: data,
       }),
-      invalidatesTags:['product'],
+      invalidatesTags: ['product'],
     }),
   }),
 });
 
-export const {useAddNewProductsMutation,useFetchAllProductsQuery,useFetchSingleProductsQuery} = productApi;
+export const { useAddNewProductMutation, useFetchAllProductsQuery, useFetchSingleProductQuery } = productApi;

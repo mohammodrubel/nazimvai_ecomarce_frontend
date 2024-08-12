@@ -41,24 +41,22 @@ const Banner = () => (
     <>
         <div className="w-full">
             <div className="grid px-5 grid-cols-12 items-center">
-                <div className=" mt-5 slider-container col-span-12 md:col-span-8 mx-5">
-                    <div className='container mx-auto'>
-                        <Carousel 
-                            autoplay={true} 
-                            autoplaySpeed={2000} 
-                            dots={false}
-                            arrows={true}
-                            infinite={true}
-                            draggable={true}
-                            vertical
-                        >
-                            {data.map((item, index) => (
-                                <div key={index}>
-                                    <Image src={item.img} width={1800} height={800} alt={item.title}/>
-                                </div>
-                            ))}
-                        </Carousel>
-                    </div>
+                <div className=" mt-5  col-span-12 md:col-span-8 mx-5">
+                    <Carousel
+                        autoplay={true}
+                        autoplaySpeed={2000}
+                        dots={false}
+                        arrows={true}
+                        infinite={true}
+                        draggable={true}
+                        vertical
+                    >
+                        {data.map((item, index) => (
+                            <div key={index}>
+                                <Image src={item.img} width={1800} height={800} alt={item.title} />
+                            </div>
+                        ))}
+                    </Carousel>
                 </div>
                 <div className=" mt-5 md:col-span-4 mx-2 col-span-12">
                     <div className="relative">

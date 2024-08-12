@@ -82,7 +82,7 @@ function ProductCard() {
                 <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
                 <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
             </div>
-            <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3'>
+            <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                 {content}
             </div>
             <Modal

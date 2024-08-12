@@ -18,21 +18,37 @@ import { FilterFilled } from '@ant-design/icons';
 
 function Page() {
     const currentCart = useSelector((state) => state?.products?.cartItem);
-    const { isLoading: productLoading, isError: productError, data: productData } = useFetchAllProductsQuery();
     const { isLoading: categoryLoading, isError: categoryError, data: categoryData } = useFetchAllCategoryQuery();
     const { isLoading: brandLoading, isError: brandError, data: brandData } = useFetchAllBrandQuery();
     const dispatch = useDispatch();
-
-    const [open, setOpen] = useState(false); // For Modal
-    const [drawerOpen, setDrawerOpen] = useState(false); // For Drawer
+    const [open, setOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false); 
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({});
     const [placement, setPlacement] = useState('right');
-    const [categoryValue, setCategoryValue] = useState(1); // For Radio Button Value
-    const [brandValue, setBrandValue] = useState(1); // For brand Button Value
+    const [categoryValue, setCategoryValue] = useState(''); 
+    const [brandValue, setBrandValue] = useState(''); 
+    //grap information for filter 
+    const [searchTerm,setSearchTerm]=useState('')
+    const [sort,setSort]=useState('')
+    const [limit,setLimit]=useState(10)
+    const [page,setPage]=useState(1)
+    const [minPrice,setMinPrice]=useState(0)
+    const [maxPrice,setMaxprice]=useState(100)
+    let totalProduct = 0
+    //sendingValueForBackend 
+    const { isLoading: productLoading, isError: productError, data: productData } = useFetchAllProductsQuery([
+        { name: 'category', value: categoryValue || '' },
+        { name: 'brand', value: brandValue || '' },
+        { name: 'searchTerm', value: searchTerm || '' },
+        { name: 'page', value: page || 1 },
+        { name: 'limit', value: limit || 10 },
+      ]);
 
+    totalProduct = productData?.meta?.total
+    console.log(totalProduct)
     const showDrawer = () => {
         setDrawerOpen(true);
     };
@@ -46,10 +62,10 @@ function Page() {
     };
 
     const onChangeCategory = (e) => {
-        setCategoryValue(e.target.value); // This changes the selected radio value
+        setCategoryValue(e.target.value); 
     };
     const onChangeBrand = (e) => {
-        setBrandValue(e.target.value); // This changes the selected radio value
+        setBrandValue(e.target.value); 
     };
 
     const addToWishlist = () => {
@@ -67,6 +83,9 @@ function Page() {
     const decrement = (product) => {
         dispatch(decrementQuantity(product));
     };
+    const handlePageChange = (page) => {
+        setPage(page);
+      };
 
     let content = null;
 
@@ -113,7 +132,7 @@ function Page() {
     } else {
         categoryContent = categoryData?.data?.map((item, index) => (
             <div key={index}>
-                <Radio value={item?.name}>{item?.name}</Radio>
+                <Radio value={item?._id}>{item?.name}</Radio>
             </div>
         ));
     }
@@ -129,7 +148,7 @@ function Page() {
     } else {
         brandContent = brandData?.data?.map((item, index) => (
             <div key={index}>
-                <Radio value={item?.name}>{item?.name}</Radio>
+                <Radio value={item?._id}>{item?.name}</Radio>
             </div>
         ));
     }
@@ -145,7 +164,7 @@ function Page() {
             <div className='bg-slate-50'>
                 <div className='flex container mx-auto gap-5 py-5 items-center justify-between mt-5'>
                     <Select
-                        placeholder="Sort by"
+                        placeholder="Sort by Product"
                         onChange={onSortChange}
                         style={{ width: 200 }}
                         suffixIcon={<FilterFilled />}
@@ -155,7 +174,9 @@ function Page() {
                         <Option value="rating">Sort by Rating</Option>
                         <Option value="popularity">Sort by Popularity</Option>
                     </Select>
-                    <i onClick={showDrawer} className={`text-4xl cursor-pointer text-[#663130] fa-solid fa-gear ${style.spin}`}></i>
+                    <div className='flex items-center' onClick={showDrawer}>
+                        <b className='mx-2 cursor-pointer'>Filter</b><i className={` cursor-pointer text-[#663130] fa-solid fa-filter`}></i>
+                    </div>
                 </div>
             </div>
 
@@ -210,7 +231,7 @@ function Page() {
                 onClose={onClose}
                 open={drawerOpen}
             >
-                <Input placeholder="Search Your Product" />
+                <Input placeholder="Search Your Product" onChange={(e)=> setSearchTerm(e.target.value)} />
                 <h3 className='text-bold text-gray-700 font-bold mt-5'>Categories</h3>
                 <Radio.Group onChange={onChangeCategory} value={categoryValue}>
                     <Space direction="vertical">
@@ -220,14 +241,14 @@ function Page() {
 
 
                 <h3 className='text-bold text-gray-700 font-bold mt-5'>Brand</h3>
-                <Radio.Group onChange={onChangeCategory} value={categoryValue}>
+                <Radio.Group onChange={onChangeBrand} value={brandValue}>
                     <Space direction="vertical">
                         {brandContent}
                     </Space>
                 </Radio.Group>
             </Drawer>
             <div className='flex justify-center my-20'>
-            <Pagination defaultCurrent={1} className='text-center mx-auto' total={50} />
+            <Pagination  current={page} onChange={handlePageChange}className='text-center mx-auto' total={totalProduct} />
             </div>
         </>
     );
