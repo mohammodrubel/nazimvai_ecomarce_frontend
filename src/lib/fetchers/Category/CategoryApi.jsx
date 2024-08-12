@@ -7,6 +7,11 @@ export const CategoryApi = RootApi.injectEndpoints({
       providesTags:['category']
     }),
     
+    fetchSingleCategory: builder.query({
+      query: (id) => `/category/get-single-category/${id}`,
+      providesTags:['category']
+    }),
+    
     addNewCategory:builder.mutation({
       query:(data)=>({
         url:'/category/add-category',
@@ -19,4 +24,4 @@ export const CategoryApi = RootApi.injectEndpoints({
   }),
 });
 
-export const {useAddNewCategoryMutation,useFetchAllCategoryQuery} = CategoryApi;
+export const {useAddNewCategoryMutation,useFetchAllCategoryQuery,useFetchSingleCategoryQuery} = CategoryApi;

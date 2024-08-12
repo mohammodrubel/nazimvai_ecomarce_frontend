@@ -1,8 +1,3 @@
-import { Slider, List } from 'antd';
-import style from '../../app/shop/shop.module.css'
-import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
-import Loading from '../Loading/Loading';
-import Error from '../Error/Error';
 import {FilterOutlined} from '@ant-design/icons';
 
 function ShopFilter() {

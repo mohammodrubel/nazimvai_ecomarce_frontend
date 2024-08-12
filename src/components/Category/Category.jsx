@@ -5,6 +5,7 @@ import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import Image from 'next/image';
 import style from './Category.module.css'
+import Link from 'next/link';
 
 function Category() {
     const { isLoading, isError, data } = useFetchAllCategoryQuery()
@@ -22,6 +23,7 @@ function Category() {
     if (!isLoading && !isError && data && data.data.length > 0) {
         content = data?.data?.map((item, index) => (
             <div className='relative' key={index}>
+                <Link href={`/category/${item?._id}`}>
                 <Image
                     className='mx-auto text-center'
                     width={200}
@@ -30,9 +32,11 @@ function Category() {
                     alt={item?.name}
                     style={{ borderRadius: '50%' }}
                 />
+                
                 <div className={style.category}>
                     <div className={`${style.categoryTitle} text-center`}>{item?.name}</div>
                 </div>
+                </Link>
             </div>
         ));
     }

@@ -10,7 +10,7 @@ import NavbarUserInformation from '../userActivity/NavbarUserInformation';
 
 function Navigation() {
     const [scrollSize, setScrollSize] = useState(0)
-  
+
     useEffect(() => {
         const handleScroll = () => {
             setScrollSize(window.scrollY);
@@ -39,8 +39,8 @@ function Navigation() {
                                 <CategorySubMenu />
                             </li>
                             <li className={`${style.singleShopSubmenu} relative`}>
-                                <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Shop</Link>
-                                <ShopSubMenu/>
+                                <Link href="/shop" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Shop</Link>
+                                <ShopSubMenu />
                             </li>
                             <li className='relative'>
                                 <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>About</Link>
@@ -48,7 +48,7 @@ function Navigation() {
                         </ul>
                     </div>
                     <div className='mx-5'>
-                        <NavbarUserInformation/>
+                        <NavbarUserInformation />
                     </div>
                 </div>
             </div>

@@ -19,7 +19,9 @@ export const ProductSlice = createSlice({
                 (item) => item._id === action.payload._id
             );
             if (existingProduct) {
-                if (existingProduct.in_stock <= existingProduct.quantity) {
+                if (existingProduct.in_stock === 0) {
+                    toast.error("Sorry, the item is out of stock.");
+                } else if (existingProduct.in_stock <= existingProduct.quantity) {
                     toast.error("Sorry, the item is out of stock.");
                 } else {
                     existingProduct.quantity += 1;
@@ -27,12 +29,17 @@ export const ProductSlice = createSlice({
                     toast.success("Added to cart");
                 }
             } else {
-                const newProduct = { ...action.payload, quantity: 1 };
-                state.cartItem.push(newProduct);
-                localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
-                toast.success("Added to cart");
+                if (action.payload.in_stock === 0) {
+                    toast.error("Sorry, the item is out of stock.");
+                } else {
+                    const newProduct = { ...action.payload, quantity: 1 };
+                    state.cartItem.push(newProduct);
+                    localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
+                    toast.success("Added to cart");
+                }
             }
         },
+        
         decrementQuantity: (state, action) => {
             const existingProduct = state.cartItem.find(item => item._id === action.payload._id);
             if (existingProduct) {

@@ -12,6 +12,7 @@ const Page = () => {
   const { data: brandData } = useFetchAllBrandQuery();
   const { data: categoryData } = useFetchAllCategoryQuery();
   const categoryOption = categoryData?.data.map((item) => ({ value: item._id, label: item?.name }));
+  console.log(categoryOption)
   const brandOption = brandData?.data.map((item) => ({ value: item._id, label: item?.name }));
   const [addNewProduct, { isLoading, isError, data: productData }] = useAddNewProductsMutation();
 
@@ -34,6 +35,7 @@ const Page = () => {
   };
 
   const onSubmit = async (values) => {
+    console.log(values)
     const formData = new FormData();
     fileList.forEach((file) => {
       formData.append("files", file.originFileObj);
@@ -97,10 +99,10 @@ const Page = () => {
         <Form.Item name="weight">
           <InputNumber style={{ width: "100%" }} placeholder="Weight" />
         </Form.Item>
-        <Form.Item name="category_id" rules={[{ required: true, message: "Please select the category" }]}>
+        <Form.Item name="category" rules={[{ required: true, message: "Please select the category" }]}>
           <Select options={categoryOption} placeholder="Category" />
         </Form.Item>
-        <Form.Item name="brand_id" rules={[{ required: true, message: "Please select the brand" }]}>
+        <Form.Item name="brand" rules={[{ required: true, message: "Please select the brand" }]}>
           <Select options={brandOption} placeholder="Brand" />
         </Form.Item>
       </div>

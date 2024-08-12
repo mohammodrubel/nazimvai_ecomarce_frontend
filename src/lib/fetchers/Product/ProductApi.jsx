@@ -3,7 +3,7 @@ import { RootApi } from "../api/apiSlice";
 export const productApi = RootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllProducts: builder.query({
-      query: () => '/product/get-all-products',
+      query: (data) => `/product/get-all-products`,
       providesTags:['product']
     }),
     fetchSingleProducts:builder.query({

@@ -1,9 +1,9 @@
-import React from 'react'
+import style from './pageHeader.module.css'
 
-function PageHeader({title}) {
+function PageHeader({ title }) {
   return (
-    <div className='w-[100%] font-bold text-2xl sm:text-4xl md:text-6xl h-[300px] flex justify-center items-center capitalize'>
-        {title}
+    <div className={`font-bold text-2xl sm:text-4xl md:text-6xl  capitalize ${style.background}`}>
+      {title}
     </div>
   )
 }

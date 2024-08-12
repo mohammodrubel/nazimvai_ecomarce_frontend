@@ -1,56 +1,80 @@
 "use client";
 import PageHeader from '@/components/PageHeader/PageHeader';
-import ShopFilter from '@/components/ShopFilter/ShopFilter';
-import { InputNumber, Modal, Slider, AutoComplete, Button } from 'antd';
+import { Pagination, InputNumber, Input, Modal, Button, Drawer, Space, Radio } from 'antd';
 import React, { useState } from 'react';
 import style from './shop.module.css';
-import classNames from 'classnames';
-import { SearchOutlined } from '@ant-design/icons';
 import Loading from '@/components/Loading/Loading';
 import Error from '@/components/Error/Error';
-import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
+import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
+import { useFetchAllBrandQuery } from '@/lib/fetchers/Brand/BrandApi';
+import { Select } from 'antd';
+const { Option } = Select;
+import { FilterFilled } from '@ant-design/icons';
 
 function Page() {
-    const currentCart = useSelector((state) => state?.products?.cartItem)
-    const [shopFilterActive, setShopFilterActive] = useState(false);
-    const { isLoading, isError, data } = useFetchAllCategoryQuery();
-    const { isLoading:productLoading, isError:productError, data:productData } = useFetchAllProductsQuery();
-    const dispatch = useDispatch()
-    const [open, setOpen] = useState(false);
+    const currentCart = useSelector((state) => state?.products?.cartItem);
+    const { isLoading: productLoading, isError: productError, data: productData } = useFetchAllProductsQuery();
+    const { isLoading: categoryLoading, isError: categoryError, data: categoryData } = useFetchAllCategoryQuery();
+    const { isLoading: brandLoading, isError: brandError, data: brandData } = useFetchAllBrandQuery();
+    const dispatch = useDispatch();
+
+    const [open, setOpen] = useState(false); // For Modal
+    const [drawerOpen, setDrawerOpen] = useState(false); // For Drawer
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
-    const [singleProductData, setSingleProductData] = useState({})
-    let content = null;
+    const [singleProductData, setSingleProductData] = useState({});
+    const [placement, setPlacement] = useState('right');
+    const [categoryValue, setCategoryValue] = useState(1); // For Radio Button Value
+    const [brandValue, setBrandValue] = useState(1); // For brand Button Value
+
+    const showDrawer = () => {
+        setDrawerOpen(true);
+    };
+
+    const onClose = () => {
+        setDrawerOpen(false);
+    };
+
+    const onChangePlacement = (e) => {
+        setPlacement(e.target.value); // This changes the drawer's placement
+    };
+
+    const onChangeCategory = (e) => {
+        setCategoryValue(e.target.value); // This changes the selected radio value
+    };
+    const onChangeBrand = (e) => {
+        setBrandValue(e.target.value); // This changes the selected radio value
+    };
+
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
 
     const handelAddToCart = (product) => {
-        dispatch(addProduct(product))
+        dispatch(addProduct(product));
+    };
 
-    }
     const increment = (product) => {
-        dispatch(addProduct(product))
-    }
+        dispatch(addProduct(product));
+    };
+
     const decrement = (product) => {
-        dispatch(decrementQuantity(product))
-    }
-    
+        dispatch(decrementQuantity(product));
+    };
+
+    let content = null;
 
     if (productLoading) {
         content = <Loading />;
-    }
-    if (!productLoading && productError) {
+    } else if (productError) {
         content = <Error text="Something went wrong" />;
-    }
-    if (!productLoading && !productError && !productData || productData?.data?.length === 0) {
+    } else if (!productData || productData?.data?.length === 0) {
         content = <Error text="No Data Found" />;
     } else {
         content = productData?.data?.map((item, index) => (
@@ -78,83 +102,67 @@ function Page() {
         ));
     }
 
-   
+    let categoryContent = null;
 
-    let categoryOptions = [];
-    const [initialValue, setInitialValue] = useState([10,90])
+    if (categoryLoading) {
+        categoryContent = <Loading />;
+    } else if (categoryError) {
+        categoryContent = <Error text="Something went wrong" />;
+    } else if (!categoryData || categoryData?.data?.length === 0) {
+        categoryContent = <Error text="No Data Found" />;
+    } else {
+        categoryContent = categoryData?.data?.map((item, index) => (
+            <div key={index}>
+                <Radio value={item?.name}>{item?.name}</Radio>
+            </div>
+        ));
+    }
 
-    if (isLoading) {
-        categoryOptions = <Loading />;
+    let brandContent = null;
+
+    if (brandLoading) {
+        brandContent = <Loading />;
+    } else if (brandError) {
+        brandContent = <Error text="Something went wrong" />;
+    } else if (!brandData || categoryData?.data?.length === 0) {
+        brandContent = <Error text="No Data Found" />;
+    } else {
+        brandContent = brandData?.data?.map((item, index) => (
+            <div key={index}>
+                <Radio value={item?.name}>{item?.name}</Radio>
+            </div>
+        ));
     }
-    if (!isLoading && isError) {
-        categoryOptions = <Error errorText="Something went wrong" />;
-    }
-    if (!isLoading && !isError &&  data?.data.length === 0) {
-        categoryOptions = <Error errorText="No data found" />;
-    }
-    if (!isLoading && !isError &&  data?.data.length > 0) {
-        categoryOptions = data.data.map((item) => ({ value: item.name }));
-    }
-    const handleSearch = (value) => {
-        console.log(value);
-    };
+
+  const onSortChange = (values)=>{
+    console.log(values);
+  }
 
     return (
         <>
             <PageHeader title="SHOP" />
-            <div className='mt-20 container mx-auto'>
-                <div className='flex justify-between flex-wrap items-center'>
-                    {Array.isArray(categoryOptions) ? (
-                        <>
-                            <div className='mt-4'>
-                            <p className='text-gray-500'>Search Categories Or Product Name</p>
-                            <AutoComplete
-                                options={categoryOptions}
-                                placeholder="Search Categories Or Product Name"
-                                filterOption={(inputValue, option) =>
-                                    option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                                }
-                                style={{minWidth:'90%'}}
-                                size='large'
-                                onSearch={handleSearch}
-                            />
-                            </div>
-                            <div className='text-center mt-4'>
-                            <p className='text-gray-500'>Filter Your Price</p>
-                            <Slider
-                                range={{
-                                    editable: true,
-                                    minCount: 1,
-                                    maxCount: 5,
-                                }}
-                                style={{width:"250px"}}
-                                value={initialValue}
-                                onChange={setInitialValue}
-                            />
-                            </div>
-                        </>
-                    ) : (
-                        categoryOptions
-                    )}
-                    <Button
-                        onClick={() => setShopFilterActive(!shopFilterActive)}
-                        className='font-bold mt-4'
-                        type="dashed"
-                        size="large"
+
+            <div className='bg-slate-50'>
+                <div className='flex container mx-auto gap-5 py-5 items-center justify-between mt-5'>
+                    <Select
+                        placeholder="Sort by"
+                        onChange={onSortChange}
+                        style={{ width: 200 }}
+                        suffixIcon={<FilterFilled />}
                     >
-                        Filter Your Product
-                    </Button>
-                </div>
-                <div className={classNames({
-                    [style.shopFilter]: true,
-                    [style.shopFilterActive]: shopFilterActive
-                })}>
-                    <ShopFilter />
+                        <Option value="lowToHigh">Price: Low to High</Option>
+                        <Option value="highToLow">Price: High to Low</Option>
+                        <Option value="rating">Sort by Rating</Option>
+                        <Option value="popularity">Sort by Popularity</Option>
+                    </Select>
+                    <i onClick={showDrawer} className={`text-4xl cursor-pointer text-[#663130] fa-solid fa-gear ${style.spin}`}></i>
                 </div>
             </div>
-            <div className='grid grid-cols1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto'>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto'>
                 {content}
             </div>
+
             <Modal
                 centered
                 open={open}
@@ -183,17 +191,44 @@ function Page() {
                         <h3 className="text-2xl">Price : {singleProductData.price}</h3>
                         <p className='text-gray-400'>{singleProductData?.desc}</p>
                         <div className='flex gap-4 my-4 items-center'>
-                            <Button className='font-bold border-[#663130]' onClick={()=>increment(singleProductData)}>+</Button>
+                            <Button className='font-bold border-[#663130]' onClick={() => increment(singleProductData)}>+</Button>
                             <InputNumber disabled value={currentCart?.find((checkProduct) => checkProduct?._id === singleProductData?._id)?.quantity || 0}></InputNumber>
-                            <Button className='font-bold border-[#663130]' onClick={()=>decrement(singleProductData)}>-</Button>
+                            <Button className='font-bold border-[#663130]' onClick={() => decrement(singleProductData)}>-</Button>
                         </div>
                         <div className='flex gap-5 mt-5'>
-                            <button onClick={() => handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
-                            <button disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
+                            <button onClick={() => handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className="mt-1 hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
+                            <button disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Wishlist <i className="mt-1 hover:text-[#381B1A] fa-solid fa-heart"></i></button>
                         </div>
                     </div>
                 </div>
             </Modal>
+
+            <Drawer
+                title="Filter Your Product"
+                placement={placement}
+                className='w-[50%]'
+                onClose={onClose}
+                open={drawerOpen}
+            >
+                <Input placeholder="Search Your Product" />
+                <h3 className='text-bold text-gray-700 font-bold mt-5'>Categories</h3>
+                <Radio.Group onChange={onChangeCategory} value={categoryValue}>
+                    <Space direction="vertical">
+                        {categoryContent}
+                    </Space>
+                </Radio.Group>
+
+
+                <h3 className='text-bold text-gray-700 font-bold mt-5'>Brand</h3>
+                <Radio.Group onChange={onChangeCategory} value={categoryValue}>
+                    <Space direction="vertical">
+                        {brandContent}
+                    </Space>
+                </Radio.Group>
+            </Drawer>
+            <div className='flex justify-center my-20'>
+            <Pagination defaultCurrent={1} className='text-center mx-auto' total={50} />
+            </div>
         </>
     );
 }

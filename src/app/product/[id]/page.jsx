@@ -40,6 +40,7 @@ function Page() {
   } else if (!isLoading && !isError && data?.data) {
     console.log(data?.data)
     const mainData = data.data;
+    console.log(mainData)
     content = (
       <>
         <div className="mt-20 md:px-10 sm:px-5 px-3 py-5 bg-slate-100 flex gap-4 font-bold">
@@ -48,7 +49,7 @@ function Page() {
               title: <Link href="/">Home</Link>,
             },
             {
-              title: <Link href="/oil">OIL</Link>,
+              title: <Link href={`/category${mainData?.category?.name}`}>{mainData?.category?.name}</Link>,
             },
             {
               title: mainData?.name,
@@ -91,7 +92,7 @@ function Page() {
                 <h4 className='font-medium p-2'>In Stock: {mainData?.in_stock}</h4>
               </div>
               <p className="text-gray-500 mt-4">
-                {mainData?.desc}
+                {mainData?.desc.slice(0,300)}
               </p>
               <div className='flex gap-4 my-4 items-center'>
                 <Button className='font-bold border-[#663130]' onClick={() => increment(singleProductData)}>+</Button>

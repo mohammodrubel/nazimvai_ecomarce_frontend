@@ -4,12 +4,7 @@ import React from 'react'
 function Error({errorText}) {
     return (
         <div className='mx-auto'>
-            <Alert
-                message="Error"
-                description={errorText}
-                type="error"
-                showIcon
-            />
+            <b className='text-center text-red-500'>{errorText}</b>
         </div>
     )
 }
