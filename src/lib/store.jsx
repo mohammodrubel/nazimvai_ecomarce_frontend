@@ -10,7 +10,7 @@ import { persistStore, persistReducer,FLUSH,
   PURGE,
   REGISTER, } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-
+import wishlistSlice  from './fetchers/wishlist/wishlistSlice'
 
 const persistConfig = {
   key:'auth',
@@ -23,7 +23,8 @@ export const store = configureStore({
   reducer: {
         [productApi.reducerPath]:productApi.reducer,
         products:ProductSlice,
-        auth:persistAuthReducers
+        wishlist:wishlistSlice,
+        auth:persistAuthReducers,
   },
   middleware:(getDefaultMiddelware)=>getDefaultMiddelware({serializableCheck:{
     ignoredActions:[FLUSH,REHYDRATE,PAUSE,PERSIST,PURGE,REGISTER]

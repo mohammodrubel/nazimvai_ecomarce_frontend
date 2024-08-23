@@ -1,30 +1,4 @@
 
-.shopFilter {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-}
-/* .filter */
-.shopFilterActive {
-    max-height: 1500px;
-}
-.sortItem {
-    display: flex;
-    justify-content: flex-start;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.sortItem:hover {
-    background-color: #f0f0f0; /* Ant Design's light gray hover color */
-}
-
-.sortText {
-    color: #000;
-    font-weight: 500;
-}
-
 .imgContainer {
     margin: 0 auto;
     position: relative;
@@ -70,16 +44,3 @@
   .iconul li{
     cursor: pointer;
   }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .spin {
-    animation: spin 3s linear infinite;
-  }
-  

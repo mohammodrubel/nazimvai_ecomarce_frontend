@@ -4,9 +4,6 @@ export const productApi = RootApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllProducts: builder.query({
       query: (args) => {
-        console.log('args', args);
-    
-        // Construct the query string from the args
         const queryString = new URLSearchParams(
           args.reduce((acc, { name, value }) => {
             if (value) acc[name] = value;

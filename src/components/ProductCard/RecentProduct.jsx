@@ -12,19 +12,58 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
 import { toggleWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice';
+import Slider from "react-slick";
 
 
 
-function ProductCard() {
+function RecentProduct() {
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(8)
     const currentCart = useSelector((state) => state?.products?.cartItem)
     const { isLoading, isError, data } = useFetchAllProductsQuery([
         { name: 'page', value: page || 1 },
         { name: 'limit', value: limit },
-        {name:'sort',value:'desc'}
     ]);
     let totalQuantity = data?.meta?.total
+    var settings = {
+        autoplay: true,
+        autoplaySpeed: 2000,
+        pauseOnHover:false,
+        dots: false,
+        infinite: true,
+        speed: 1000,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1100,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 2,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 700,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              initialSlide: 2
+            }
+          },
+          
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+    }
+
 
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
@@ -33,11 +72,9 @@ function ProductCard() {
     const [singleProductData, setSingleProductData] = useState({})
     const dispatch = useDispatch()
 
-  const wishlistHandeler = (product)=>{
-    dispatch(toggleWishlistItem(product))
-  }
-
-
+    const wishlistHandeler = (product) => {
+        dispatch(toggleWishlistItem(product))
+    }
     const handelAddToCart = (product) => {
         dispatch(addProduct(product))
 
@@ -57,7 +94,7 @@ function ProductCard() {
     if (!isLoading && !isError && !data || data?.data?.length === 0) {
         content = <Error text="No Data Found" />;
     } else {
-        content = data?.data?.map((item, index) => (
+        content = data?.data?.slice(0, 8).map((item, index) => (
             <div key={index}>
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
@@ -67,7 +104,7 @@ function ProductCard() {
                     ))}
                     <div style={{ width: "300px", margin: '0 auto' }}>
                         <ul className={`${style.iconul} flex flex-col justify-center items-center gap-8 rounded`}>
-                            <li onClick={()=> wishlistHandeler(item)}><i className="text-[20px] text-white fa-regular fa-heart"></i></li>
+                            <li onClick={() => wishlistHandeler(item)}><i className="text-[20px] text-white fa-regular fa-heart"></i></li>
                             <li onClick={() => handelAddToCart(item)}><i className="text-[20px] text-white fa-solid fa-cart-shopping"></i></li>
                             <li onClick={() => { setOpen(true); setSingleProductData(item); setSelectedImages(item.images); setTitle(item.name); setSelectImage(0); }}><i className="text-[20px] text-white fa-solid fa-eye"></i></li>
                         </ul>
@@ -88,20 +125,21 @@ function ProductCard() {
     const decrement = (product) => {
         dispatch(decrementQuantity(product))
     }
-   
+
 
 
     return (
         <div className='container mx-auto'>
             <div className='text-center mb-5'>
-                <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>perfect shades</h4>
-                <h3 className='text-2xl md:text-4xl text-[#663130] font-bold my-3'>FIND YOUR BEAUTY MATCH</h3>
+                <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>Recent Product</h4>
             </div>
-            <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+            {/* <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                 {content}
-            </div>
-            <div className='flex justify-center my-10'>
-                <Pagination current={page} onChange={handlePageChange} total={totalQuantity} />
+            </div> */}
+            <div className="slider-container text-center">
+                <Slider {...settings}>
+                {content}
+                </Slider>
             </div>
 
             <Modal
@@ -130,7 +168,7 @@ function ProductCard() {
                             <p className='font-bold text-gray-500'>weight - {singleProductData?.weight}</p>
                         </div>
                         <h3 className="text-2xl">Price : {singleProductData.price}</h3>
-                        <p className='text-gray-400'>{singleProductData?.desc?.slice(0,450)}</p>
+                        <p className='text-gray-400'>{singleProductData?.desc?.slice(0, 450)}</p>
                         <div className='flex gap-4 my-4 items-center'>
                             <Button className='font-bold border-[#663130]' onClick={() => increment(singleProductData)}>+</Button>
                             <InputNumber disabled value={currentCart?.find((checkProduct) => checkProduct?._id === singleProductData?._id)?.quantity || 0}></InputNumber>
@@ -138,7 +176,7 @@ function ProductCard() {
                         </div>
                         <div className='flex gap-5 mt-5'>
                             <button onClick={() => handelAddToCart(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Cart <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-cart-shopping"></i></button>
-                            <button onClick={()=>wishlistHandeler(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
+                            <button onClick={() => wishlistHandeler(singleProductData)} disabled={singleProductData.in_stock === 0} className='addToCart'>Add To Wishlist <i className=" mt-1  hover:text-[#381B1A] fa-solid fa-solid fa-heart"></i></button>
                         </div>
                     </div>
                 </div>
@@ -147,4 +185,4 @@ function ProductCard() {
     );
 }
 
-export default ProductCard;
+export default RecentProduct;

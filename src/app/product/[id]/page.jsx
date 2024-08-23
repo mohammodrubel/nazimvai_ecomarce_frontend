@@ -1,7 +1,7 @@
 "use client";
 import Error from "@/components/Error/Error";
 import Loading from "@/components/Loading/Loading";
-import { useFetchSingleProductsQuery } from "@/lib/fetchers/Product/ProductApi";
+import { useFetchSingleProductQuery } from "@/lib/fetchers/Product/ProductApi";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Breadcrumb, Button, InputNumber, Image as AntdImage } from "antd";
@@ -9,14 +9,21 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, decrementQuantity } from "@/lib/fetchers/Product/ProductSlice";
+import { toggleWishlistItem } from "@/lib/fetchers/wishlist/wishlistSlice";
+
 
 function Page() {
   const { id } = useParams();
   const currentCart = useSelector((state) => state?.products?.cartItem);
-  const { isLoading, isError, data } = useFetchSingleProductsQuery(id);
+  const { isLoading, isError, data } = useFetchSingleProductQuery(id);
   const [singleProductData, setSingleProductData] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
   const dispatch = useDispatch();
+  
+  const wishlistHandeler = (product)=>{
+    dispatch(toggleWishlistItem(product))
+  }
+
 
   useEffect(() => {
     if (data?.data) {
@@ -40,7 +47,7 @@ function Page() {
   } else if (!isLoading && !isError && data?.data) {
     console.log(data?.data)
     const mainData = data.data;
-    console.log(mainData)
+
     content = (
       <>
         <div className="mt-20 md:px-10 sm:px-5 px-3 py-5 bg-slate-100 flex gap-4 font-bold">
@@ -49,7 +56,7 @@ function Page() {
               title: <Link href="/">Home</Link>,
             },
             {
-              title: <Link href={`/category${mainData?.category?.name}`}>{mainData?.category?.name}</Link>,
+              title: <Link href={`/category/${mainData?.category?._id}`}>{mainData?.category?.name}</Link>,
             },
             {
               title: mainData?.name,
@@ -86,7 +93,7 @@ function Page() {
               </div>
             </div>
             <div className="mx-3 sm:mx-4 md:mx-5 col-span-12 md:col-span-6 lg:col-span-5 justify-between items-center">
-              <h1 className="text-2xl sm:text-4xl md:text-6xl text-gray-500">{mainData?.name}</h1>
+              <h1 className="text-2xl sm:text-4xl text-gray-500">{mainData?.name}</h1>
               <div className='flex items-center gap-5 bg-slate-50 p-4'>
                 <h1 className="text-2xl text-gray-800">Price: $ {mainData?.price}</h1>
                 <h4 className='font-medium p-2'>In Stock: {mainData?.in_stock}</h4>
@@ -99,6 +106,7 @@ function Page() {
                 <InputNumber className="font-bold text-black" disabled value={currentCart?.find((checkProduct) => checkProduct?._id === singleProductData?._id)?.quantity || 0}></InputNumber>
                 <Button className='font-bold border-[#663130]' onClick={() => decrement(singleProductData)}>-</Button>
               </div>
+              <Button onClick={()=>wishlistHandeler(mainData)} className='font-bold border-[#663130]'>Add To Wishlist</Button>
             </div>
           </div>
         </div>

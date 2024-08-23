@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Select, InputNumber, Button, Form, Input, message, Row, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { toast } from "sonner"; // Assuming this is your custom toast library
-import { useAddNewProductsMutation } from "@/lib/fetchers/Product/ProductApi";
+import { useAddNewProductMutation } from "@/lib/fetchers/Product/ProductApi";
 import { useFetchAllBrandQuery } from "@/lib/fetchers/Brand/BrandApi";
 import { useFetchAllCategoryQuery } from "@/lib/fetchers/Category/CategoryApi";
 
@@ -14,7 +14,7 @@ const Page = () => {
   const categoryOption = categoryData?.data.map((item) => ({ value: item._id, label: item?.name }));
   console.log(categoryOption)
   const brandOption = brandData?.data.map((item) => ({ value: item._id, label: item?.name }));
-  const [addNewProduct, { isLoading, isError, data: productData }] = useAddNewProductsMutation();
+  const [addNewProduct, { isLoading, isError, data: productData }] = useAddNewProductMutation();
 
   const handleChange = ({ fileList }) => {
     setFileList(fileList);
@@ -60,61 +60,57 @@ const Page = () => {
 
   return (
     <>
-    <h3 className="font-bold text-2xl px-2">Add New Product</h3>
-    <Form onFinish={onSubmit}>
-      <div className="mx-5 mt-5 mb-5">
-        <Row justify="center" align="middle">
-          <Upload
-            name="avatar"
-            listType="picture-card"
-            fileList={fileList}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-            multiple
-            onRemove={(file) => {
-              const newFileList = fileList.filter((item) => item.uid !== file.uid);
-              setFileList(newFileList);
-            }}
-          >
-            {fileList.length >= 3 ? null : uploadButton}
-          </Upload>
-        </Row>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto gap-3">
-        <Form.Item name="name" rules={[{ required: true, message: "Please enter the name" }]}>
-          <Input placeholder="Name" />
+      <h3 className="font-bold text-2xl px-2">Add New Product</h3>
+      <Form onFinish={onSubmit}>
+        <div className="mx-5 mt-5 mb-5">
+          <Row justify="center" align="middle">
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              fileList={fileList}
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
+              multiple
+              onRemove={(file) => {
+                const newFileList = fileList.filter((item) => item.uid !== file.uid);
+                setFileList(newFileList);
+              }}
+            >
+              {fileList.length >= 3 ? null : uploadButton}
+            </Upload>
+          </Row>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto gap-3">
+          <Form.Item name="name" rules={[{ required: true, message: "Please enter the name" }]}>
+            <Input placeholder="Name" />
+          </Form.Item>
+          <Form.Item name="price" rules={[{ required: true, message: "Please enter the price" }]}>
+            <InputNumber style={{ width: "100%" }} placeholder="Price" />
+          </Form.Item>
+
+          <Form.Item name="in_stock" rules={[{ required: true, message: "Please enter the stock quantity" }]}>
+            <InputNumber style={{ width: "100%" }} placeholder="In Stock" />
+          </Form.Item>
+
+          <Form.Item name="weight">
+            <InputNumber style={{ width: "100%" }} placeholder="Weight" />
+          </Form.Item>
+          <Form.Item name="category" rules={[{ required: true, message: "Please select the category" }]}>
+            <Select options={categoryOption} placeholder="Category" />
+          </Form.Item>
+          <Form.Item name="brand" rules={[{ required: true, message: "Please select the brand" }]}>
+            <Select options={brandOption} placeholder="Brand" />
+          </Form.Item>
+        </div>
+        <Form.Item name="desc" rules={[{ required: true, message: "Please enter the description" }]}>
+          <Input.TextArea rows={4} placeholder="Description" />
         </Form.Item>
-        <Form.Item name="price" rules={[{ required: true, message: "Please enter the price" }]}>
-          <InputNumber style={{ width: "100%" }} placeholder="Price" />
+        <Form.Item className="text-center">
+          <Button loading={isLoading} type="dashed" size="large" htmlType="submit">
+            Create New Product
+          </Button>
         </Form.Item>
-        <Form.Item name="total_quantity" rules={[{ required: true, message: "Please enter the total quantity" }]}>
-          <InputNumber style={{ width: "100%" }} placeholder="Total Quantity" />
-        </Form.Item>
-        <Form.Item name="in_stock" rules={[{ required: true, message: "Please enter the stock quantity" }]}>
-          <InputNumber style={{ width: "100%" }} placeholder="In Stock" />
-        </Form.Item>
-        <Form.Item name="sku">
-          <InputNumber style={{ width: "100%" }} placeholder="SKU" />
-        </Form.Item>
-        <Form.Item name="weight">
-          <InputNumber style={{ width: "100%" }} placeholder="Weight" />
-        </Form.Item>
-        <Form.Item name="category" rules={[{ required: true, message: "Please select the category" }]}>
-          <Select options={categoryOption} placeholder="Category" />
-        </Form.Item>
-        <Form.Item name="brand" rules={[{ required: true, message: "Please select the brand" }]}>
-          <Select options={brandOption} placeholder="Brand" />
-        </Form.Item>
-      </div>
-      <Form.Item name="desc" rules={[{ required: true, message: "Please enter the description" }]}>
-        <Input.TextArea rows={4} placeholder="Description" />
-      </Form.Item>
-      <Form.Item className="text-center">
-        <Button loading={isLoading} type="dashed" size="large" htmlType="submit">
-          Create New Product
-        </Button>
-      </Form.Item>
-    </Form>
+      </Form>
     </>
   );
 };

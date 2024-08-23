@@ -40,8 +40,8 @@ const brand1 = {
 const Banner = () => (
     <>
         <div className="w-full">
-            <div className="grid px-5 grid-cols-12 items-center">
-                <div className=" mt-5  col-span-12 md:col-span-8 mx-5">
+            <div className="grid grid-cols-12 items-center">
+                <div className="col-span-12 md:col-span-8">
                     <Carousel
                         autoplay={true}
                         autoplaySpeed={2000}
@@ -58,14 +58,14 @@ const Banner = () => (
                         ))}
                     </Carousel>
                 </div>
-                <div className=" mt-5 md:col-span-4 mx-2 col-span-12">
+                <div className=" md:col-span-4 col-span-12">
                     <div className="relative">
                         <div className={`${styles.overlay} flex justify-center items-center`}>
                             <h1 className="text-white text-left text-4xl">Discount {brand1.percent}</h1>
                         </div>
                         <Image src={brand1.img} width={500} height={500} className="w-full h-full object-cover" alt="brand-background" />
                     </div>
-                    <div className="relative py-2 px-2 z-10 bg-slate-200">
+                    <div className="relative py-1 px-2 z-10 bg-slate-200">
                         <h3 className="py-1 text-[#663130] text-2xl mx-3 uppercase font-bold">{brand1.title}</h3>
                         <p className="mx-1 text-[#663130]">{brand1.description.slice(0, 80)}</p>
                     </div>

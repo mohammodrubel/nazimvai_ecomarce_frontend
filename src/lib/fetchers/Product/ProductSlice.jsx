@@ -39,40 +39,60 @@ export const ProductSlice = createSlice({
                 }
             }
         },
-        
+
         decrementQuantity: (state, action) => {
             const existingProduct = state.cartItem.find(item => item._id === action.payload._id);
             if (existingProduct) {
-              if (existingProduct.quantity > 1) {
-                existingProduct.quantity -= 1;
-                toast.warning("Decrementing quantity");
-              } else {
-                state.cartItem = state.cartItem.filter(item => item._id !== action.payload._id);
-                toast.info("Removed from cart");
-              }
-              localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
+                if (existingProduct.quantity > 1) {
+                    existingProduct.quantity -= 1;
+                    toast.warning("Decrementing quantity");
+                } else {
+                    state.cartItem = state.cartItem.filter(item => item._id !== action.payload._id);
+                    toast.info("Removed from cart");
+                }
+                localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
             }
-          },    
+        },
 
         updateQuantity: (state, action) => {
             const { _id, quantity } = action.payload;
             const existingProduct = state.cartItem.find(item => item._id === _id);
 
             if (existingProduct) {
-                if (quantity === null || quantity <= 0) {
-                    existingProduct.quantity = 1;
-                } else if (quantity > existingProduct.in_stock) {
-                    toast.error("Quantity exceeds stock.");
-                    return;
-                } else {
-                    existingProduct.quantity = quantity;
+                // Ensure quantity is set to 1 if it's null, undefined, or an empty string
+                let updatedQuantity = 1; // Default to 1
+
+                if (quantity && !isNaN(quantity) && quantity > 0) {
+                    updatedQuantity = quantity; // Use the provided quantity if valid
                 }
+
+                if (updatedQuantity > existingProduct.in_stock) {
+                    toast.error("Quantity exceeds available stock.");
+                    return;
+                }
+
+                existingProduct.quantity = updatedQuantity;
+
+                // Update localStorage with the updated cart
                 localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
-                toast.success("Quantity updated");
+                toast.success("Quantity updated successfully.");
+            }
+        },
+
+
+        deleteFromCart : (state, action) => {
+            console.log(action)
+            const existingProduct = state.cartItem.find(item => item._id === action.payload.key); 
+            if (existingProduct) {
+                state.cartItem = state.cartItem.filter(item => item._id !== action.payload.key); 
+                localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
+                toast.warning(`${existingProduct.name} has been removed from your cart`);
             }
         }
+
+
     }
 })
 
-export const { addProduct, decrementQuantity ,updateQuantity} = ProductSlice.actions
+export const { addProduct, decrementQuantity, updateQuantity,deleteFromCart } = ProductSlice.actions
 export default ProductSlice.reducer

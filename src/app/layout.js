@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import Navigation from "@/components/Navigation/Navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Footer from "@/components/Footer/Footer";
 
 export const metadata = {
   title: "Create Next App",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
           <AntdRegistry>
             <Navigation />
             {children}
+            <Footer/>
             <Toaster position="top-center" richColors />
           </AntdRegistry>
         </ReduxProvider>

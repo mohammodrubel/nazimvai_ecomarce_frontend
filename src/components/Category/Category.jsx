@@ -1,15 +1,17 @@
 "use client"
+import { Pagination } from 'antd';
 import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi'
-import React from 'react'
+import React, { useState } from 'react'
 import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import Image from 'next/image';
 import style from './Category.module.css'
 import Link from 'next/link';
+import Slider from "react-slick";
 
 function Category() {
     const { isLoading, isError, data } = useFetchAllCategoryQuery()
-
+   
     let content = null;
     if (isLoading) {
         content = <Loading />;
@@ -40,11 +42,51 @@ function Category() {
             </div>
         ));
     }
+    var settings = {
+        autoplay: true,
+        autoplaySpeed: 2000,
+        pauseOnHover:false,
+    dots: false,
+        infinite: true,
+        speed: 1000,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 900,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 2,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              initialSlide: 2
+            }
+          },
+          
+          {
+            breakpoint: 350,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+    }
 
     return (
         <div className='container mx-auto my-5'>
-            <div className='grid mx-auto justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+             <div className="slider-container text-center">
+                <Slider {...settings}>
                 {content}
+                </Slider>
             </div>
         </div>
     )

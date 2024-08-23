@@ -2,15 +2,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Image as AntdImage, InputNumber, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { updateQuantity as updateQuantityAction } from "@/lib/fetchers/Product/ProductSlice";
+import { deleteFromCart, updateQuantity } from "@/lib/fetchers/Product/ProductSlice";
+
 
 function Page() {
   const currentCart = useSelector((state) => state.products.cartItem);
   const dispatch = useDispatch();
 
   const handleQuantityChange = (id, value) => {
-    dispatch(updateQuantityAction({ _id: id, quantity: value }));
+    dispatch(updateQuantity({ _id: id, quantity: value }));
   };
+  const deleteHandler = (record) => {
+    dispatch(deleteFromCart(record));
+};
+ 
 
   const columns = [
     {
@@ -49,12 +54,18 @@ function Page() {
         <InputNumber
           min={1}
           max={record.in_stock}
-          defaultValue={record.quantity}
-          onChange={(item) => handleQuantityChange(record.key,item)}
+          value={record.quantity}
+          onChange={(value) => handleQuantityChange(record.key, value !== undefined && value !== null && value !== "" ? value : 1)}
+          onBlur={(e) => {
+            if (e.target.value === "" || e.target.value === "0") {
+              handleQuantityChange(record.key, 1);
+            }
+          }}
           className="mx-2"
         />
       ),
     },
+    
     {
       title: "Action",
       key: "action",
@@ -63,14 +74,14 @@ function Page() {
           <Button
             type="link"
             danger
-            // onClick={() => deleteItem(record._id)}
+            onClick={() => deleteHandler(record)}
             icon={<CloseOutlined />}
           >
             Delete
           </Button>
         </div>
       ),
-    },
+    }
   ];
 
   const dataSource = currentCart.map((item) => ({

@@ -1,59 +1,157 @@
-"use client"
-import Link from 'next/link';
+"use client";
+import React, { useState, useEffect } from 'react';
+import { Input, Drawer, Menu, Dropdown } from 'antd';
+import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import style from './Navigation.module.css';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import NavbarUserInformation from '../userActivity/NavbarUserInformation';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/lib/fetchers/Authintication/authSlice';
 import CategorySubMenu from './CategorySubMenu';
 import ShopSubMenu from './ShopSubMenu';
-import NavbarUserInformation from '../userActivity/NavbarUserInformation';
 
-
+const { Search } = Input;
 
 function Navigation() {
-    const [scrollSize, setScrollSize] = useState(0)
+  const user = useSelector((state) => state?.auth?.user);
+  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch()
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const router = useRouter();
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (currentScrollTop > lastScrollTop && currentScrollTop > 10) {
+        // Scrolling down, hide the nav completely
+        setShowNav(false);
+      } else if (currentScrollTop < lastScrollTop && currentScrollTop > 10) {
+        // Scrolling up, show the nav
+        setShowNav(true);
+      }
+      setLastScrollTop(currentScrollTop);
+    };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrollSize(window.scrollY);
-        };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollTop]);
 
-        window.addEventListener('scroll', handleScroll);
+  const showDrawer = () => {
+    setVisible(true);
+  };
 
-        // Clean up the event listener on unmount
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+  const onClose = () => {
+    setVisible(false);
+  };
 
-    return (
-        <div className={`${style.navigation} relative z-50 ${scrollSize > 300 ? style.activeNavigation : ''}`}>
-            <div className='container mx-auto'>
-                <div className='flex justify-between items-center'>
-                    <div className='mt-1 text-2xl mb-5'>LOGO</div>
-                    <div className={`${style.navMenu} flex items-center gap-5`}>
-                        <ul className='flex  gap-5'>
-                            <li className=''>
-                                <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Home</Link>
-                            </li>
-                            <li className={`${style.singleShopSubmenu} relative`}>
-                                <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Category</Link>
-                                <CategorySubMenu />
-                            </li>
-                            <li className={`${style.singleShopSubmenu} relative`}>
-                                <Link href="/shop" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>Shop</Link>
-                                <ShopSubMenu />
-                            </li>
-                            <li className='relative'>
-                                <Link href="/" className='text-[18px] font-medium block px-4 my-2.5 relative transition-all duration-300 uppercase list-none tracking-widest'>About</Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className='mx-5'>
-                        <NavbarUserInformation />
-                    </div>
-                </div>
+  const onSearch = (value) => {
+    router.push(`/search?${value}`);
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="login">
+        <a href="/login">Login</a>
+      </Menu.Item>
+      <Menu.Item key="registration">
+        <a href="/registration">Registration</a>
+      </Menu.Item>
+      <Menu.Item key="forgot-password">
+        <a href="/forgot-password">Forgot Password</a>
+      </Menu.Item>
+      <Menu.Item key="reset-password">
+        <a href="/reset-password">Reset Password</a>
+      </Menu.Item>
+      <Menu.Item key="dashboard">
+        <a href="/dashboard">Dashboard</a>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const logoutHandeler = ()=>{
+    dispatch(logout())
+  }
+
+  return (
+    <>
+      <div className="wrapper mb-5">
+        <div className={`bg-pink-300 fixed left-0 w-full z-50 transition-transform duration-300 ${showNav ? 'translate-y-0' : '-translate-y-full'} top-0`}>
+          <div className='px-2 container mx-auto py-4'>
+            <div className='flex justify-between items-center flex-wrap'>
+              <h3 className='text-4xl font-light text-white'>LOGO</h3>
+              <div className={`${style.search} flex-grow mx-4`}>
+                <Search
+                  placeholder="input search text"
+                  onSearch={onSearch}
+                  size='large'
+                />
+              </div>
+              <div className='flex space-x-4 items-center justify-center'>
+                <Dropdown overlay={menu} trigger={['click']}>
+                  <p className='cursor-pointer flex justify-center text-center text-white items-center font-bold'>
+                    <UserOutlined className='text-white' style={{ marginRight: 4 }} />
+                    {user?.email ? <p onClick={logoutHandeler}>Logout</p> : <Link href='/login'>Login</Link>}
+                  </p>
+                </Dropdown>
+                <NavbarUserInformation />
+                <p className={`${style.mobileMenu} flex items-center font-bold text-white cursor-pointer`} onClick={showDrawer}>
+                  <MenuOutlined className='text-white' style={{ marginRight: 4 }} />
+                  Menu
+                </p>
+              </div>
+              <div className={style.mobileSearch}>
+                <Search
+                  placeholder="input search text"
+                  onSearch={onSearch}
+                />
+              </div>
             </div>
+            <div className='flex gap-5 justify-center py-4'>
+              <nav>
+                <ul className='flex gap-5'>
+                  <li>
+                    <Link className='font-bold text-white' href='/'>Home</Link>
+                    </li>
+                  <li className={`${style.singleShopSubmenu} relative`}>
+                    <Link className='font-bold text-white' href='/shop'>Shop</Link>
+                    <ShopSubMenu />
+                    </li>
+                  <li  className={`${style.singleShopSubmenu} relative`}>
+                    <Link className='font-bold text-white' href='/category'>Category</Link>
+                    <CategorySubMenu />
+                    </li>
+                  <li>
+                    <Link className='font-bold text-white' href='/contact'>Contact Us</Link>
+                    </li>
+                </ul>
+              </nav>
+            </div>
+            <Drawer
+              title="Menu"
+              placement="right"
+              onClose={onClose}
+              open={visible}
+            >
+              <p>Menu Item 1</p>
+              <p>Menu Item 2</p>
+              <p>Menu Item 3</p>
+            </Drawer>
+          </div>
         </div>
-    );
+
+        {/* Banner Section */}
+        <div className="banner-section" style={{ marginTop: '80px' }}>
+          <img src="/path-to-your-banner.jpg" alt="Banner" className="w-full" />
+        </div>
+
+        {/* The rest of your content goes here */}
+        <div className="content">
+          {/* Your page content */}
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default Navigation;

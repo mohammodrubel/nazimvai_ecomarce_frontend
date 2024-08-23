@@ -1,20 +1,23 @@
-.navigation{
-  padding: 10px;
-  background: white;
-  position: sticky;
-  top: 0;
-  position: relative;
+.mobileSearch{
+  display: none!important;
+  width: 100%;
+  padding: 0px 10px;
 }
+.mobileMenu{
+  display: none!important;
+}
+/* Navigation.module.css */
+
 .activeNavigation{
   padding: 10px;
-  background: #fffbfb;
+  background: #F9A8D4;
   position: sticky;
   top: 0;
 }
 .meghaMenu {
   position: fixed;
-  top: 60px;
-  background: white;
+  top: 100px;
+  background: #F9A8D4;
   padding: 10px 0px;
   width: 100%;
   margin: 0 auto;
@@ -123,32 +126,44 @@
   visibility: visible; /* Make .meghaMenu visible */
 }
 
+
+
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
-  .navMenu{
+  .search{
     display: none!important;
+    
+  }
+  .mobileSearch{
+    display: block!important;
+    width: 100%;
+    padding: 0px 10px;
+  }
+  .mobileMenu{
+    display: block!important;
   }
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
-  .navMenu{
+  .search{
     display: none!important;
+  }
+  .mobileSearch{
+    display: block!important;
+    width: 100%;
+    padding: 0px 10px;
   }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
-  .navMenu{
-    display: none!important;
-  }
+  
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  .navMenu{
-    display: none!important;
-  }
+ 
 
 }
 

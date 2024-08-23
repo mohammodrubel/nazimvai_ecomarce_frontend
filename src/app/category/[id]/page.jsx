@@ -1,7 +1,6 @@
 "use client"
-import { InputNumber, Button, Modal } from 'antd';
+import { Pagination, InputNumber, Button, Modal } from 'antd';
 import { useFetchSingleCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
-import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -12,19 +11,21 @@ import { toast } from 'sonner';
 import Loading from '@/components/Loading/Loading';
 import Error from '@/components/Error/Error';
 import style from '../../../components/ProductCard/ProductCard.module.css'
+import { useFetchAllFeatchersProductsQuery } from '@/lib/fetchers/homeProduct/homeProduct';
 
 function Page() {
     const dispatch = useDispatch();
     const currentCart = useSelector((state) => state?.products?.cartItem);
     const { id } = useParams();
     const {isLoading:categoryLoading,isError:categoryError, data:categoryData } = useFetchSingleCategoryQuery(id);
-    const {isLoading,isError, data: productData } = useFetchAllProductsQuery();
+    const {isLoading,isError, data: productData } = useFetchAllFeatchersProductsQuery();
     const filterData = productData?.data?.filter((item) => item?.category?._id === id);
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({});
+    const [page,setPage]=useState(1)
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
@@ -75,6 +76,9 @@ function Page() {
     const decrement = (product) => {
         dispatch(decrementQuantity(product))
     }
+    const handlePageChange = (page) => {
+        setPage(page);
+      };
 
 
     return (
@@ -124,8 +128,11 @@ function Page() {
                     </div>
                 </div>
             </Modal>
+            <div className='flex justify-center my-20'>
+            <Pagination  current={page} onChange={handlePageChange}className='text-center mx-auto' total={10} />
+            </div>
         </>
-    );
+    )
 }
 
 export default Page;
