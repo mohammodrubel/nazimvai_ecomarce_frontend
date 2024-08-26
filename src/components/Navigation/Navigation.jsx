@@ -16,7 +16,7 @@ const { Search } = Input;
 function Navigation() {
   const user = useSelector((state) => state?.auth?.user);
   const [visible, setVisible] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const router = useRouter();
@@ -49,6 +49,7 @@ function Navigation() {
   const onSearch = (value) => {
     router.push(`/search?${value}`);
   };
+
   const menu = (
     <Menu>
       <Menu.Item key="login">
@@ -69,13 +70,13 @@ function Navigation() {
     </Menu>
   );
 
-  const logoutHandeler = ()=>{
-    dispatch(logout())
-  }
+  const logoutHandeler = () => {
+    dispatch(logout());
+  };
 
   return (
     <>
-      <div className="wrapper mb-5">
+      <div className="wrapper">
         <div className={`bg-pink-300 fixed left-0 w-full z-50 transition-transform duration-300 ${showNav ? 'translate-y-0' : '-translate-y-full'} top-0`}>
           <div className='px-2 container mx-auto py-4'>
             <div className='flex justify-between items-center flex-wrap'>
@@ -90,8 +91,7 @@ function Navigation() {
               <div className='flex space-x-4 items-center justify-center'>
                 <Dropdown overlay={menu} trigger={['click']}>
                   <p className='cursor-pointer flex justify-center text-center text-white items-center font-bold'>
-                    <UserOutlined className='text-white' style={{ marginRight: 4 }} />
-                    {user?.email ? <p onClick={logoutHandeler}>Logout</p> : <Link href='/login'>Login</Link>}
+                  <i class="cursor-pointer text-white text-[20px] fa-solid fa-user-large"></i>
                   </p>
                 </Dropdown>
                 <NavbarUserInformation />
@@ -112,18 +112,18 @@ function Navigation() {
                 <ul className='flex gap-5'>
                   <li>
                     <Link className='font-bold text-white' href='/'>Home</Link>
-                    </li>
+                  </li>
                   <li className={`${style.singleShopSubmenu} relative`}>
                     <Link className='font-bold text-white' href='/shop'>Shop</Link>
                     <ShopSubMenu />
-                    </li>
-                  <li  className={`${style.singleShopSubmenu} relative`}>
+                  </li>
+                  <li className={`${style.singleShopSubmenu} relative`}>
                     <Link className='font-bold text-white' href='/category'>Category</Link>
                     <CategorySubMenu />
-                    </li>
+                  </li>
                   <li>
                     <Link className='font-bold text-white' href='/contact'>Contact Us</Link>
-                    </li>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -140,13 +140,8 @@ function Navigation() {
           </div>
         </div>
 
-        {/* Banner Section */}
-        <div className="banner-section" style={{ marginTop: '80px' }}>
-          <img src="/path-to-your-banner.jpg" alt="Banner" className="w-full" />
-        </div>
-
-        {/* The rest of your content goes here */}
-        <div className="content">
+        {/* Adjust the margin-top for the content to reserve space for the fixed navigation */}
+        <div className="content mt-[126px]">
           {/* Your page content */}
         </div>
       </div>

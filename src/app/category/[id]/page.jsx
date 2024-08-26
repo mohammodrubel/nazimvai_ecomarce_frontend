@@ -32,7 +32,6 @@ function Page() {
 
     const handelAddToCart = (product) => {
         dispatch(addProduct(product))
-
     }
     let content = null;
 

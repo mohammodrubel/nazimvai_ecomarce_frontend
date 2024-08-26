@@ -4,28 +4,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Table as AntdTable, Image as AntdImage, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { removeWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice'; // Adjust the path if necessary
+import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
 
 function Page() {
-    const { wishlist } = useSelector((state) => state?.wishlist) || []; 
+    const { wishlist } = useSelector((state) => state?.wishlist) || {}; 
     const dispatch = useDispatch();
 
     const handleDeleteWishlist = (product) => {
-        console.log(product);
-        dispatch(removeWishlistItem({ key: product.key }));
+        dispatch(removeWishlistItem({ key: product._id }));
+    };
+
+    const handleAddToCart = (product) => {
+        dispatch(addProduct(product))
     };
 
     const columns = [
         {
             title: "Image",
-            dataIndex: "image",
+            dataIndex: "images",
             key: "image",
-            render: (text, record) => (
-                <AntdImage
-                    src={record.images[0]} // Display the first image
-                    width={80}
-                    height={80}
-                    alt={`Product ${record.name}`}
-                />
+            render: (images) => (
+                images && images.length > 0 ? (
+                    <AntdImage
+                        src={images[0]} // Display the first image
+                        width={80}
+                        height={80}
+                        alt="Product Image"
+                    />
+                ) : (
+                    <span>No Image Available</span> // Handle case where no images are available
+                )
             ),
         },
         {
@@ -37,17 +45,18 @@ function Page() {
             title: "Price",
             dataIndex: "price",
             key: "price",
+            render: (price) => `${price}`, // Format price to 2 decimal places
         },
         {
             title: "Current Stock",
             dataIndex: "in_stock",
             key: "in_stock",
-        },        
+        },
         {
             title: "Action",
             key: "action",
             render: (text, record) => (
-                <div className="flex items-center">
+                <>
                     <Button
                         type="link"
                         danger
@@ -56,23 +65,25 @@ function Page() {
                     >
                         Delete
                     </Button>
-                </div>
+                    <Button
+                        type="link"
+                        onClick={() => handleAddToCart(record)}
+                    >
+                        Add To Cart
+                    </Button>
+                </>
             ),
         },
     ];
 
     const dataSource = wishlist?.map((item) => ({
-        key: item._id, // Unique key for each row
-        images: item.images,
-        name: item.name,
-        price: item.price,
-        in_stock: item.in_stock,
-    }));
+        ...item, // Spread the item to keep all original properties, including _id
+    })) || [];
 
     return (
         <div className="mx-auto">
-    <AntdTable columns={columns} dataSource={dataSource} />
-  </div>
+            <AntdTable columns={columns} dataSource={dataSource} pagination={{ pageSize: 5 }} />
+        </div>
     );
 }
 

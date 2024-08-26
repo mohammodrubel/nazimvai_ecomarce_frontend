@@ -7,7 +7,6 @@ import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import Image from 'next/image';
 import style from './ProductCard.module.css';
-import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
@@ -20,15 +19,12 @@ function RecentProduct() {
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(8)
     const currentCart = useSelector((state) => state?.products?.cartItem)
-    const { isLoading, isError, data } = useFetchAllProductsQuery([
-        { name: 'page', value: page || 1 },
-        { name: 'limit', value: limit },
-    ]);
+    const { isLoading, isError, data } = useFetchAllProductsQuery([]);
     let totalQuantity = data?.meta?.total
     var settings = {
         autoplay: true,
         autoplaySpeed: 2000,
-        pauseOnHover:false,
+        pauseOnHover: false,
         dots: false,
         infinite: true,
         speed: 1000,
@@ -36,35 +32,33 @@ function RecentProduct() {
         slidesToScroll: 1,
         initialSlide: 0,
         responsive: [
-          {
-            breakpoint: 1100,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 2,
-              infinite: true,
-              dots: true
+            {
+                breakpoint: 1100,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 700,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    initialSlide: 2
+                }
+            },
+
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
             }
-          },
-          {
-            breakpoint: 700,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 1,
-              initialSlide: 2
-            }
-          },
-          
-          {
-            breakpoint: 480,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
         ]
     }
-
-
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
@@ -129,19 +123,18 @@ function RecentProduct() {
 
 
     return (
-        <div className='container mx-auto'>
-            <div className='text-center mb-5'>
-                <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>Recent Product</h4>
+        <>
+            <div className='container mx-auto'>
+                <div className='text-center mb-5'>
+                    <h4 className='text-2xl sm:text-4xl md:text-6xl font-bold extraFont my-5'>Recent Product</h4>
+                </div>
+                
+                <div className="slider-container text-center">
+                    <Slider {...settings}>
+                        {content}
+                    </Slider>
+                </div>
             </div>
-            {/* <div className='grid grid-cols-1 gap-5 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-                {content}
-            </div> */}
-            <div className="slider-container text-center">
-                <Slider {...settings}>
-                {content}
-                </Slider>
-            </div>
-
             <Modal
                 centered
                 open={open}
@@ -181,7 +174,8 @@ function RecentProduct() {
                     </div>
                 </div>
             </Modal>
-        </div>
+        </>
+
     );
 }
 
