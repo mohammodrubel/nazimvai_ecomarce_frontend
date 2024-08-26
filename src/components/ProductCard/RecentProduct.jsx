@@ -24,7 +24,7 @@ function RecentProduct() {
     var settings = {
         autoplay: true,
         autoplaySpeed: 2000,
-        pauseOnHover: false,
+        pauseOnHover: true,
         dots: false,
         infinite: true,
         speed: 1000,

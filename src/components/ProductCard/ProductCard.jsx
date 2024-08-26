@@ -10,7 +10,7 @@ import style from './ProductCard.module.css';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
+import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
 import { toggleWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice';
 
 

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Table, Image as AntdImage, InputNumber, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { deleteFromCart, updateQuantity } from "@/lib/fetchers/Product/ProductSlice";
+import Link from "next/link";
 
 
 function Page() {
@@ -14,8 +15,8 @@ function Page() {
   };
   const deleteHandler = (record) => {
     dispatch(deleteFromCart(record));
-};
- 
+  };
+
 
   const columns = [
     {
@@ -65,7 +66,7 @@ function Page() {
         />
       ),
     },
-    
+
     {
       title: "Action",
       key: "action",
@@ -97,6 +98,9 @@ function Page() {
     <div className="bg-slate-50 h-auto">
       <div className="mt-20 container mx-auto">
         <Table columns={columns} dataSource={dataSource} pagination={false} />
+        <div className="text-end">
+          <Link href='/checkout'><Button className="mt-5 mb-5 font-bold" type="primary" danger size="large">CheckOut</Button></Link>
+        </div>
       </div>
     </div>
   );
