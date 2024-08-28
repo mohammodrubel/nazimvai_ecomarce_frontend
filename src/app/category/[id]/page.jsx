@@ -26,11 +26,13 @@ function Page() {
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({});
     const [page,setPage]=useState(1)
+    
     const addToWishlist = () => {
         toast.success('Added to wishlist');
     };
 
     const handelAddToCart = (product) => {
+       
         dispatch(addProduct(product))
     }
     let content = null;

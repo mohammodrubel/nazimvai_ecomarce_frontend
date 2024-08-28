@@ -4,7 +4,6 @@ export const authSlice = RootApi.injectEndpoints({
   endpoints: (builder) => ({
     registration: builder.mutation({
       query: (data) => {
-        console.log(data,'redux');
         return {
           url: '/auth/register-user',
           method: 'POST',

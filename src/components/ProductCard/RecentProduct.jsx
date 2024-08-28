@@ -22,6 +22,7 @@ function RecentProduct() {
     const { isLoading, isError, data } = useFetchAllProductsQuery([]);
     let totalQuantity = data?.meta?.total
     var settings = {
+        arrows:false,
         autoplay: true,
         autoplaySpeed: 2000,
         pauseOnHover: true,

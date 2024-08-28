@@ -12,7 +12,7 @@ const Page = () => {
   const { data: brandData } = useFetchAllBrandQuery();
   const { data: categoryData } = useFetchAllCategoryQuery();
   const categoryOption = categoryData?.data.map((item) => ({ value: item._id, label: item?.name }));
-  console.log(categoryOption)
+
   const brandOption = brandData?.data.map((item) => ({ value: item._id, label: item?.name }));
   const [addNewProduct, { isLoading, isError, data: productData }] = useAddNewProductMutation();
 
@@ -35,7 +35,6 @@ const Page = () => {
   };
 
   const onSubmit = async (values) => {
-    console.log(values)
     const formData = new FormData();
     fileList.forEach((file) => {
       formData.append("files", file.originFileObj);

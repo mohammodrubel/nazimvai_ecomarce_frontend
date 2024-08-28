@@ -1,48 +1,43 @@
 "use client"
-import { Pagination } from 'antd';
-import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi'
-import React, { useState } from 'react'
+import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
 import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
+import Link from 'next/link';
 import Image from 'next/image';
 import style from './Category.module.css'
-import Link from 'next/link';
-import Slider from "react-slick";
+import Slider from 'react-slick/lib/slider';
 
 function Category() {
-  const { isLoading, isError, data } = useFetchAllCategoryQuery()
+  const { isLoading, isError, data } = useFetchAllCategoryQuery();
+  let content ;
 
-  let content = null;
-  if (isLoading) {
-    content = <Loading />;
+  if(isLoading){
+    content = <Loading/>
   }
-  if (!isLoading && isError) {
-    content = <Error text="something went wrong" />;
+  if(!isLoading && isError){
+    content = <Error/>
   }
-  if (!isLoading && !isError && data && data.data.length === 0) {
-    content = <Error text="No Data Found" />;
+  if(!isLoading && !isError && data?.data?.length === 0){
+    content = <Error errorText="No Data Found"/>
   }
-  if (!isLoading && !isError && data && data.data.length > 0) {
-    content = data?.data?.map((item, index) => (
-      <div className='relative' key={index}>
-        <Link href={`/category/${item?._id}`}>
-          <Image
-            className='mx-auto text-center'
-            width={200}
-            height={200}
-            src={item?.image}
-            alt={item?.name}
-            style={{ borderRadius: '50%' }}
-          />
-
-          <div className={style.category}>
-            <div className={`${style.categoryTitle} text-center`}>{item?.name}</div>
-          </div>
-        </Link>
+  if(!isLoading && !isError && data?.data.length > 0){
+    content = data?.data?.map((item,index)=> <div className="relative p-4" key={item._id}>
+    <Link href={`/category/${item._id}`}>
+      <Image
+        className="mx-auto text-center rounded-full"
+        width={200}
+        height={200}
+        src={item.image}
+        alt={item.name}
+      />
+      <div className={style.category}>
+        <div className={`${style.categoryTitle} text-center mt-4`}>{item.name}</div>
       </div>
-    ));
+    </Link>
+  </div>)
   }
   var settings = {
+    arrows:false,
     autoplay: true,
     autoplaySpeed: 2000,
     pauseOnHover: true,
@@ -73,7 +68,7 @@ function Category() {
       },
 
       {
-        breakpoint: 350,
+        breakpoint: 400,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1
@@ -81,9 +76,8 @@ function Category() {
       }
     ]
   }
-
   return (
-    <div className='container mx-auto my-5'>
+    <div style={{width:'90%',margin:'0 auto'}}>
       <div className="slider-container text-center">
         <Slider {...settings}>
           {content}

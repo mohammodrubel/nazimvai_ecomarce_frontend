@@ -1,18 +1,15 @@
+"use client"
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Image as AntdImage, InputNumber, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { deleteFromCart, updateQuantity } from "@/lib/fetchers/Product/ProductSlice";
-import Link from "next/link";
+import { deleteFromCart } from "@/lib/fetchers/Product/ProductSlice";
 import { useMemo } from "react";
 
 function FinalProduct() {
     const currentCart = useSelector((state) => state.products.cartItem);
     const dispatch = useDispatch();
 
-    const handleQuantityChange = (id, value) => {
-        dispatch(updateQuantity({ _id: id, quantity: value }));
-    };
-
+    
     const deleteHandler = (record) => {
         dispatch(deleteFromCart(record));
     };

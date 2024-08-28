@@ -38,22 +38,17 @@ function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollTop]);
 
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
+  
 
   const onSearch = (value) => {
     router.push(`/search?${value}`);
   };
+  
 
   const menu = (
     <Menu>
       <Menu.Item key="login">
-        <a href="/login">Login</a>
+        <li>{user?.email ? <p onClick={()=>logoutHandeler()}>Logout</p> : <Link href='/login'>Login</Link>}</li>
       </Menu.Item>
       <Menu.Item key="registration">
         <a href="/registration">Registration</a>
@@ -95,10 +90,6 @@ function Navigation() {
                   </p>
                 </Dropdown>
                 <NavbarUserInformation />
-                <p className={`${style.mobileMenu} flex items-center font-bold text-white cursor-pointer`} onClick={showDrawer}>
-                  <MenuOutlined className='text-white' style={{ marginRight: 4 }} />
-                  Menu
-                </p>
               </div>
               <div className={style.mobileSearch}>
                 <Search
@@ -127,16 +118,6 @@ function Navigation() {
                 </ul>
               </nav>
             </div>
-            <Drawer
-              title="Menu"
-              placement="right"
-              onClose={onClose}
-              open={visible}
-            >
-              <p>Menu Item 1</p>
-              <p>Menu Item 2</p>
-              <p>Menu Item 3</p>
-            </Drawer>
           </div>
         </div>
 

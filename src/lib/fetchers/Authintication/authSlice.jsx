@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import { toast } from 'sonner'
 const initialState = {
     user:null ,
     token:null 
@@ -16,6 +17,7 @@ const authSlice = createSlice({
         logout:(state)=>{
             state.user = null
             state.token = null
+            toast.success('logout successful')
         }
     }
 })

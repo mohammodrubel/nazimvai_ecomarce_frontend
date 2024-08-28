@@ -185,7 +185,7 @@ function Page() {
   }
   if (!productLoading && !productError && allProductData.data.length > 0) {
     const categoryWiseData = allProductData.data.filter((item, index) => item?.category._id === mainData?.category._id)
-      console.log(categoryWiseData)
+     
     product = categoryWiseData?.map((item, index) => <div key={index}>
       <div className={style.imgContainer}>
         {item?.images?.slice(0, 2).map((img, imgIndex) => (
@@ -211,7 +211,7 @@ function Page() {
 
 
   const onChange = (key) => {
-    console.log(key);
+   
   };
 
   return <>

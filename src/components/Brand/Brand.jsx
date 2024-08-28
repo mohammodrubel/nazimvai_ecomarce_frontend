@@ -9,6 +9,7 @@ import Slider from "react-slick";
 function Brand() {
     const { isLoading, isError, data } = useFetchAllBrandQuery()
     var settings = {
+        arrows:false,
         autoplay: true,
         autoplaySpeed: 1000,
         pauseOnHover: true,

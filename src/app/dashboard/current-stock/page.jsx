@@ -73,7 +73,7 @@ function Page() {
 
     // Handle table onChange event
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+    
     };
 
     // Render the Table component with defined columns and data

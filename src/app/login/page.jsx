@@ -32,7 +32,7 @@ const LoginForm = () => {
  
  
 
-  const onFinishFailed = (errorInfo) => {console.log('Failed:', errorInfo);};
+  const onFinishFailed = (errorInfo) => {};
 
   return (
     <div className={`${style.background} min-h-screen flex items-center justify-center`}>

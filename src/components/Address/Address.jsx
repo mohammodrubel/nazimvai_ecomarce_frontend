@@ -6,14 +6,14 @@ const Address = () => {
 
     // Handler for successful form submission
     const handleFinish = (values) => {
-        console.log('Form Values:', values);
+        
         message.success('Form submitted successfully!');
         // Add your custom logic for form submission, such as an API call
     };
 
     // Handler for failed form submission (validation errors)
     const handleFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+       
         message.error('Please complete the required fields!');
     };
 
