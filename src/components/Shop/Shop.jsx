@@ -17,7 +17,7 @@ import { FilterFilled } from '@ant-design/icons';
 
 const { Option } = Select;
 
-function Page() {
+function Shop() {
     const currentCart = useSelector((state) => state?.products?.cartItem);
     const { isLoading: categoryLoading, isError: categoryError, data: categoryData } = useFetchAllCategoryQuery();
     const { isLoading: brandLoading, isError: brandError, data: brandData } = useFetchAllBrandQuery();
@@ -269,4 +269,4 @@ function Page() {
     );
 }
 
-export default Page;
+export default Shop;
