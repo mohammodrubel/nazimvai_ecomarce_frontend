@@ -25,150 +25,101 @@ import Link from 'next/link';
 const menuItems = [
   {
     key: 'home',
-    icon: <HomeOutlined />,
-    label: <Link href="/dashboard/home">Home</Link>,
+    icon: <HomeOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <Link href="/dashboard/home" className="font-bold text-gray-600">Home</Link>,
   },
   {
     key: 'user',
-    icon: <UserOutlined />,
-    label: 'User',
-    children: [
-      {
-        key: 'allUsers',
-        icon: <UserOutlined />,
-        label: <Link href="/dashboard/users/all">All Users</Link>,
-      },
-      {
-        key: 'blockedUsers',
-        icon: <UsergroupDeleteOutlined />,
-        label: <Link href="/dashboard/users/blocked">Blocked Users</Link>,
-      },
-      {
-        key: 'addUser',
-        icon: <UserAddOutlined />,
-        label: <Link href="/dashboard/users/add">Add User</Link>,
-      },
-      {
-        key: 'userRoles',
-        icon: <UserSwitchOutlined />,
-        label: <Link href="/dashboard/users/roles">User Roles</Link>,
-      },
-      {
-        key: 'userGroups',
-        icon: <UsergroupAddOutlined />,
-        label: <Link href="/dashboard/users/groups">User Groups</Link>,
-      },
-    ],
-  },
-  {
-    key: 'stockManagement',
-    icon: <StockOutlined />,
-    label: 'Stock Management',
-    children: [
-      {
-        key: 'currentStock',
-        icon: <DatabaseOutlined />,
-        label: <Link href="/dashboard/current-stock">Current Stock</Link>,
-      },
-      {
-        key: 'stockHistory',
-        icon: <FileSearchOutlined />,
-        label: <Link href="/dashboard/stock/history">Stock History</Link>,
-      },
-      {
-        key: 'stockReports',
-        icon: <BarChartOutlined />,
-        label: <Link href="/dashboard/stock/reports">Stock Reports</Link>,
-      },
-    ],
+    icon: <UserOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <Link href="/dashboard/user" className="font-bold text-gray-600">User</Link>,
   },
   {
     key: 'productManagement',
-    icon: <ShoppingOutlined />,
-    label: 'Product Management',
+    icon: <ShoppingOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <span className="font-bold text-gray-600">Product Management</span>,
     children: [
       {
         key: 'addNewProduct',
-        icon: <PlusOutlined />,
-        label: <Link href="/dashboard/add-new-product">Add New Product</Link>,
+        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/add-new-product" className="font-bold text-gray-600">Add New Product</Link>,
       },
       {
         key: 'editProduct',
-        icon: <EditOutlined />,
-        label: <Link href="/dashboard/edit">Edit Product</Link>,
+        icon: <EditOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/edit" className="font-bold text-gray-600">Edit Product</Link>,
       },
       {
         key: 'deleteProduct',
-        icon: <DeleteOutlined />,
-        label: <Link href="/dashboard/delete-product">Delete Product</Link>,
+        icon: <DeleteOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/delete-product" className="font-bold text-gray-600">Delete Product</Link>,
       },
     ],
   },
   {
     key: 'order',
-    icon: <OrderedListOutlined />,
-    label: 'Order',
+    icon: <OrderedListOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <span className="font-bold text-gray-600">Order</span>,
     children: [
       {
         key: 'allOrders',
-        icon: <ProfileOutlined />,
-        label: <Link href="/dashboard/orders/all">All Orders</Link>,
+        icon: <ProfileOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/all-order" className="font-bold text-gray-600">All Orders</Link>,
       },
       {
         key: 'completedOrders',
-        icon: <CheckCircleOutlined />,
-        label: <Link href="/dashboard/orders/completed">Completed Orders</Link>,
+        icon: <CheckCircleOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/complete-order" className="font-bold text-gray-600">Completed Orders</Link>,
       },
       {
         key: 'cancelledOrders',
-        icon: <CloseCircleOutlined />,
-        label: <Link href="/dashboard/orders/cancelled">Cancelled Orders</Link>,
+        icon: <CloseCircleOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/cancelled_order" className="font-bold text-gray-600">Cancelled Orders</Link>,
       },
     ],
   },
   {
     key: 'category',
-    icon: <PictureOutlined />,
-    label: 'Category',
+    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <span className="font-bold text-gray-600">Category</span>,
     children: [
       {
         key: 'viewCategories',
-        icon: <PictureOutlined />,
-        label: <Link href="/dashboard/view-category">View Categories</Link>,
+        icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/view-category" className="font-bold text-gray-600">View Categories</Link>,
       },
       {
         key: 'createCategory',
-        icon: <PlusOutlined />,
-        label: <Link href="/dashboard/category">Create Category</Link>,
+        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/category" className="font-bold text-gray-600">Create Category</Link>,
       },
     ],
   },
   {
     key: 'brand',
-    icon: <PictureOutlined />,
-    label: 'Brand',
+    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <span className="font-bold text-gray-600">Brand</span>,
     children: [
       {
         key: 'createBrand',
-        icon: <PlusOutlined />,
-        label: <Link href="/dashboard/brand">Create Brand</Link>,
+        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/brand" className="font-bold text-gray-600">Create Brand</Link>,
       },
       {
         key: 'viewBrands',
-        icon: <PictureOutlined />,
-        label: <Link href="/dashboard/view-brand">View Brands</Link>,
+        icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+        label: <Link href="/dashboard/view-brand" className="font-bold text-gray-600">View Brands</Link>,
       },
     ],
   },
   {
     key: 'delivery',
-    icon: <CarOutlined />,
-    label: <Link href="/dashboard/delivery">Delivery</Link>,
+    icon: <CarOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <Link href="/dashboard/delivery" className="font-bold text-gray-600">Delivery</Link>,
   },
   {
     key: 'banner',
-    icon: <PictureOutlined />,
-    label: <Link href="/dashboard/banner">Banner</Link>,
+    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
+    label: <Link href="/dashboard/banner" className="font-bold text-gray-600">Banner</Link>,
   },
 ];
 

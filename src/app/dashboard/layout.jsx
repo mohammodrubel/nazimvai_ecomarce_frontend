@@ -14,10 +14,13 @@ const Page = ({ children }) => {
       <Sider
         style={{ background: 'white' }}
         breakpoint="lg"
+        width="300px"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
+          // Handle breakpoint changes if needed
         }}
         onCollapse={(collapsed, type) => {
+          // Handle collapse changes if needed
         }}
       >
         <div className="demo-logo-vertical" />
@@ -36,7 +39,7 @@ const Page = ({ children }) => {
             style={{
               padding: 24,
               height: '100vh',
-              background: 'white'
+              background: 'white',
             }}
           >
             {children}
