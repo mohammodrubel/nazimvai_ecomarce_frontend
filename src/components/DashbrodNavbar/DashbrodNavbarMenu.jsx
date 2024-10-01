@@ -1,12 +1,8 @@
 import {
   HomeOutlined,
-  StockOutlined,
   ShoppingOutlined,
   CarOutlined,
   PictureOutlined,
-  DatabaseOutlined,
-  FileSearchOutlined,
-  BarChartOutlined,
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
@@ -15,111 +11,243 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   UserOutlined,
-  UsergroupDeleteOutlined,
-  UserAddOutlined,
-  UserSwitchOutlined,
-  UsergroupAddOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 
 const menuItems = [
   {
     key: 'home',
-    icon: <HomeOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <Link href="/dashboard/home" className="font-bold text-gray-600">Home</Link>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <HomeOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <Link href="/dashboard/home" className="font-bold text-gray-600">
+          Home
+        </Link>
+      </div>
+    ),
   },
   {
     key: 'user',
-    icon: <UserOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <Link href="/dashboard/user" className="font-bold text-gray-600">User</Link>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <UserOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <Link href="/dashboard/user" className="font-bold text-gray-600">
+          User
+        </Link>
+      </div>
+    ),
   },
   {
     key: 'productManagement',
-    icon: <ShoppingOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <span className="font-bold text-gray-600">Product Management</span>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <ShoppingOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <span className="font-bold text-gray-600">Product Management</span>
+      </div>
+    ),
     children: [
       {
         key: 'addNewProduct',
-        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/add-new-product" className="font-bold text-gray-600">Add New Product</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <PlusOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/add-new-product" className="font-bold text-gray-600">
+              Add New Product
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'editProduct',
-        icon: <EditOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/edit" className="font-bold text-gray-600">Edit Product</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <EditOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/edit" className="font-bold text-gray-600">
+              Edit Product
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'deleteProduct',
-        icon: <DeleteOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/delete-product" className="font-bold text-gray-600">Delete Product</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <DeleteOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/delete-product" className="font-bold text-gray-600">
+              Delete Product
+            </Link>
+          </div>
+        ),
       },
     ],
   },
   {
     key: 'order',
-    icon: <OrderedListOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <span className="font-bold text-gray-600">Order</span>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <OrderedListOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <span className="font-bold text-gray-600">Order</span>
+      </div>
+    ),
     children: [
       {
         key: 'allOrders',
-        icon: <ProfileOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/all-order" className="font-bold text-gray-600">All Orders</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <ProfileOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/all-order" className="font-bold text-gray-600">
+              All Orders
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'completedOrders',
-        icon: <CheckCircleOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/complete-order" className="font-bold text-gray-600">Completed Orders</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <CheckCircleOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/complete-order" className="font-bold text-gray-600">
+              Completed Orders
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'cancelledOrders',
-        icon: <CloseCircleOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/cancelled_order" className="font-bold text-gray-600">Cancelled Orders</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <CloseCircleOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/cancelled_order" className="font-bold text-gray-600">
+              Cancelled Orders
+            </Link>
+          </div>
+        ),
       },
     ],
   },
   {
     key: 'category',
-    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <span className="font-bold text-gray-600">Category</span>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <PictureOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <span className="font-bold text-gray-600">Category</span>
+      </div>
+    ),
     children: [
       {
         key: 'viewCategories',
-        icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/view-category" className="font-bold text-gray-600">View Categories</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <PictureOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/view-category" className="font-bold text-gray-600">
+              View Categories
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'createCategory',
-        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/category" className="font-bold text-gray-600">Create Category</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <PlusOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/category" className="font-bold text-gray-600">
+              Create Category
+            </Link>
+          </div>
+        ),
       },
     ],
   },
   {
     key: 'brand',
-    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <span className="font-bold text-gray-600">Brand</span>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <PictureOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <span className="font-bold text-gray-600">Brand</span>
+      </div>
+    ),
     children: [
       {
         key: 'createBrand',
-        icon: <PlusOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/brand" className="font-bold text-gray-600">Create Brand</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <PlusOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/brand" className="font-bold text-gray-600">
+              Create Brand
+            </Link>
+          </div>
+        ),
       },
       {
         key: 'viewBrands',
-        icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-        label: <Link href="/dashboard/view-brand" className="font-bold text-gray-600">View Brands</Link>,
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <PictureOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+            </div>
+            <Link href="/dashboard/view-brand" className="font-bold text-gray-600">
+              View Brands
+            </Link>
+          </div>
+        ),
       },
     ],
   },
   {
     key: 'delivery',
-    icon: <CarOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <Link href="/dashboard/delivery" className="font-bold text-gray-600">Delivery</Link>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <CarOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <Link href="/dashboard/delivery" className="font-bold text-gray-600">
+          Delivery
+        </Link>
+      </div>
+    ),
   },
   {
     key: 'banner',
-    icon: <PictureOutlined style={{fontSize:'18px',color:'#2CB1EC'}} />,
-    label: <Link href="/dashboard/banner" className="font-bold text-gray-600">Banner</Link>,
+    label: (
+      <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+        <div className="mr-2">
+          <PictureOutlined style={{ fontSize: '18px', color: '#2CB1EC' }} />
+        </div>
+        <Link href="/dashboard/banner" className="font-bold text-gray-600">
+          Banner
+        </Link>
+      </div>
+    ),
   },
 ];
 
