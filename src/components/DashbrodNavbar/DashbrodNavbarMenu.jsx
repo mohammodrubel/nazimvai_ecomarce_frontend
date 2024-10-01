@@ -95,7 +95,7 @@ const menuItems = [
       {
         key: 'editProduct',
         icon: <EditOutlined />,
-        label: <Link href="/dashboard/products/edit">Edit Product</Link>,
+        label: <Link href="/dashboard/edit">Edit Product</Link>,
       },
       {
         key: 'deleteProduct',
