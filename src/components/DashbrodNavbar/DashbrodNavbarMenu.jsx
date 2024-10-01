@@ -100,7 +100,7 @@ const menuItems = [
       {
         key: 'deleteProduct',
         icon: <DeleteOutlined />,
-        label: <Link href="/dashboard/products/delete">Delete Product</Link>,
+        label: <Link href="/dashboard/delete-product">Delete Product</Link>,
       },
     ],
   },

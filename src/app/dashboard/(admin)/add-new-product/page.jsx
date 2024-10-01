@@ -1,49 +1,49 @@
 "use client";
 import React, { useState } from "react";
-import { Select, InputNumber, Button, Form, Input, message, Row, Upload } from "antd";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { toast } from "sonner"; // Assuming this is your custom toast library
+import { Upload, Button, Form, Input, InputNumber, Select, Row, Modal } from "antd";
+import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
 import { useAddNewProductMutation } from "@/lib/fetchers/Product/ProductApi";
 import { useFetchAllBrandQuery } from "@/lib/fetchers/Brand/BrandApi";
 import { useFetchAllCategoryQuery } from "@/lib/fetchers/Category/CategoryApi";
 
 const Page = () => {
   const [fileList, setFileList] = useState([]);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+
   const { data: brandData } = useFetchAllBrandQuery();
   const { data: categoryData } = useFetchAllCategoryQuery();
-  const categoryOption = categoryData?.data.map((item) => ({ value: item._id, label: item?.name }));
 
-  const brandOption = brandData?.data.map((item) => ({ value: item._id, label: item?.name }));
-  const [addNewProduct, { isLoading, isError, data: productData }] = useAddNewProductMutation();
+  const categoryOption = categoryData?.data?.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
+  const brandOption = brandData?.data?.map((item) => ({
+    value: item._id,
+    label: item.name,
+  }));
 
-  const handleChange = ({ fileList }) => {
-    setFileList(fileList);
+  const [addNewProduct, { isLoading, isError }] = useAddNewProductMutation();
+
+  const handlePreview = async (file) => {
+    setPreviewImage(file.url || file.preview);
+    setPreviewVisible(true);
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
   };
 
-  const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-      return Upload.LIST_IGNORE;
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must be smaller than 2MB!");
-      return Upload.LIST_IGNORE;
-    }
-    return true;
-  };
+  const handleChange = ({ fileList }) => setFileList(fileList);
 
   const onSubmit = async (values) => {
     const formData = new FormData();
     fileList.forEach((file) => {
       formData.append("files", file.originFileObj);
     });
-
     formData.append("data", JSON.stringify(values));
 
     try {
-      await addNewProduct(formData);
+      await addNewProduct(formData).unwrap();
       toast.success("Product added successfully");
     } catch (error) {
       toast.error("Error adding product");
@@ -51,10 +51,10 @@ const Page = () => {
   };
 
   const uploadButton = (
-    <Button style={{ border: 0, background: "none" }} type="button">
-      {isLoading ? <LoadingOutlined /> : <PlusOutlined />}
+    <div>
+      {fileList.length < 3 ? <PlusOutlined /> : null}
       <div style={{ marginTop: 8 }}>Upload</div>
-    </Button>
+    </div>
   );
 
   return (
@@ -64,12 +64,13 @@ const Page = () => {
         <div className="mx-5 mt-5 mb-5">
           <Row justify="center" align="middle">
             <Upload
-              name="avatar"
+              name="files"
               listType="picture-card"
               fileList={fileList}
-              beforeUpload={beforeUpload}
+              onPreview={handlePreview}
               onChange={handleChange}
               multiple
+              beforeUpload={() => false}
               onRemove={(file) => {
                 const newFileList = fileList.filter((item) => item.uid !== file.uid);
                 setFileList(newFileList);
@@ -77,8 +78,17 @@ const Page = () => {
             >
               {fileList.length >= 3 ? null : uploadButton}
             </Upload>
+            <Modal
+              visible={previewVisible}
+              title={previewTitle}
+              footer={null}
+              onCancel={() => setPreviewVisible(false)}
+            >
+              <img alt="example" style={{ width: "100%" }} src={previewImage} />
+            </Modal>
           </Row>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto gap-3">
           <Form.Item name="name" rules={[{ required: true, message: "Please enter the name" }]}>
             <Input placeholder="Name" />
@@ -86,11 +96,9 @@ const Page = () => {
           <Form.Item name="price" rules={[{ required: true, message: "Please enter the price" }]}>
             <InputNumber style={{ width: "100%" }} placeholder="Price" />
           </Form.Item>
-
           <Form.Item name="in_stock" rules={[{ required: true, message: "Please enter the stock quantity" }]}>
             <InputNumber style={{ width: "100%" }} placeholder="In Stock" />
           </Form.Item>
-
           <Form.Item name="weight">
             <InputNumber style={{ width: "100%" }} placeholder="Weight" />
           </Form.Item>
@@ -101,14 +109,18 @@ const Page = () => {
             <Select options={brandOption} placeholder="Brand" />
           </Form.Item>
         </div>
+
         <Form.Item name="desc" rules={[{ required: true, message: "Please enter the description" }]}>
           <Input.TextArea rows={4} placeholder="Description" />
         </Form.Item>
+
         <Form.Item className="text-center">
           <Button loading={isLoading} type="dashed" size="large" htmlType="submit">
             Create New Product
           </Button>
         </Form.Item>
+
+        {isError && <p style={{ color: "red", textAlign: "center" }}>Error adding product. Please try again.</p>}
       </Form>
     </>
   );

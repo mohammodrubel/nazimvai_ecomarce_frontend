@@ -12,12 +12,12 @@ export default function Home() {
   return (
     <ReduxProvider>
       <Banner />
-      <Category/>
-      <SkinCareBanner/>
-      <ProductCard/>
-      <RecentProduct/>
-      <Brand/>
-      <Subscribe/>
+      <Category />
+      <SkinCareBanner />
+      <ProductCard />
+      <RecentProduct />
+      <Brand />
+      <Subscribe />
     </ReduxProvider>
   );
 }
