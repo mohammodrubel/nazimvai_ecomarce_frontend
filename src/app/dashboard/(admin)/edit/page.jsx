@@ -1,18 +1,44 @@
 "use client";
 import Error from '@/components/Error/Error';
+import EditUpdateProductForm from '@/components/Form/EditUpdateProductForm';
 import Loading from '@/components/Loading/Loading';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
-import { Table, Button, Popconfirm } from 'antd';
+import { Button, Input, Modal, Pagination, Spin, Table } from 'antd';
+import Image from 'next/image';
+import { useState } from 'react';
 
 export default function Page() {
-  const { isLoading, isError, data } = useFetchAllProductsQuery([]);
-  
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [searchTerm, setSearchTerm] = useState('')
+  const { isLoading, isError, data } = useFetchAllProductsQuery(
+    [
+      { name: 'searchTerm', value: searchTerm || '' },
+      { name: 'page', value: page || 1 },
+      { name: 'limit', value: limit || 10 },
+    ]
+  );
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [singleData, setSingleData] = useState({})
+  const showLoading = () => {
+    setOpen(true);
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
   let content = null;
   let dataSource = [];
 
   if (isLoading) {
     content = <Loading />;
   }
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
   if (isError) {
     content = <Error errorText="Something went wrong" />;
@@ -25,13 +51,26 @@ export default function Page() {
       dataSource = data.data; // Set data source only if data exists and has items
     }
   }
-
-  const handleDelete = (id) => {
-    console.log(`Delete item with id: ${id}`);
-    // Implement delete logic here (e.g., API call)
-  };
-
   const columns = [
+    {
+      title: 'Images',
+      dataIndex: 'images',
+      key: 'images',
+      render: (images) => (
+        <div className="flex gap-4 items-center">
+          {images?.map((image, index) => (
+            <Image
+            className="rounded-md"
+              key={index}
+              src={image}
+              width={50}
+              height={50}
+              alt={`product-image-${index}`}
+            />
+          ))}
+        </div>
+      )
+    },
     {
       title: 'Name',
       dataIndex: 'name',
@@ -61,30 +100,54 @@ export default function Page() {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Popconfirm
-          title="Are you sure to delete this item?"
-          onConfirm={() => handleDelete(record._id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="dashed" >
+        <span onClick={() => setSingleData(record)}>
+          <Button type="dashed" onClick={showLoading} >
             Edit Product
           </Button>
-        </Popconfirm>
+        </span>
       ),
     },
   ];
 
+  const totalProduct = data?.meta?.total
+
   return (
-    <div className="mb-10">
-      {content}
-      {dataSource.length > 0 && <Table 
-      bordered
-      scroll={{ x: true }}  
-      columns={columns} 
-      dataSource={dataSource} 
-      pagination={false}
-      />} 
-    </div>
+    <>
+      <div className="mb-10">
+
+        <div className="container text-center my-8 mx-auto">
+          <Input size="large" style={{ width: '60%' }} placeholder="Search Your Product" onChange={(e) => setSearchTerm(e.target.value)} />
+        </div>
+
+        <Table
+          bordered
+          scroll={{ x: true }}
+          columns={columns}
+          dataSource={dataSource}
+          pagination={false}
+        />
+        <p className="text-center">{content}</p>
+        <div className="flex justify-center my-10">
+          <Pagination
+            current={page}
+            total={totalProduct}
+            pageSize={limit}
+            onChange={handlePageChange} />
+        </div>
+      </div>
+
+      <Modal
+        open={open}
+        onCancel={() => setOpen(false)}
+      >
+        {loading ? (
+          <Spin />
+        ) : (
+          <>
+            <EditUpdateProductForm previousData={singleData} />
+          </>
+        )}
+      </Modal>
+    </>
   );
 }

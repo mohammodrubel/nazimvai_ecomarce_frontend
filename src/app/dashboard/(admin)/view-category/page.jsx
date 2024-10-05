@@ -1,12 +1,34 @@
-"use client"
-import { Button, Table } from 'antd';
+"use client";
+
+import { Button, Table, Modal, Form, Input } from 'antd';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useFetchAllCategoryQuery } from '@/lib/fetchers/Category/CategoryApi';
+import EditCategoryForm from '@/components/Form/EditCategoryForm';
 
+function Page() {
+  const { isLoading, isError, data } = useFetchAllCategoryQuery();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null); // Track the category being edited
 
-function page() {
-  const { isLoading, isError, data } = useFetchAllCategoryQuery()
-  const tableData = data?.data
+  const tableData = data?.data;
+
+  const handleEditClick = (category) => {
+    setEditingCategory(category); // Set the current category to be edited
+    setIsModalVisible(true); // Show the modal
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false); // Hide the modal
+    setEditingCategory(null); // Clear the category being edited
+  };
+
+  const handleSave = () => {
+    // Logic to handle saving the edited category
+    console.log('Saving:', editingCategory);
+    setIsModalVisible(false); // Hide the modal after saving
+  };
+
   const columns = [
     {
       title: 'Name',
@@ -16,29 +38,53 @@ function page() {
     {
       title: 'Image',
       dataIndex: 'image',
-      key: 'age',
-      render: (image) => <Image src={image} width={70} height={70} style={{ borderRadius: '50%' }} />
+      key: 'image',
+      render: (image) => (
+        <Image src={image} width={70} height={70} style={{ borderRadius: '50%' }} alt="Category" />
+      ),
     },
     {
       title: 'Action',
-      dataIndex: 'action',
       key: 'action',
-      render: () => <><Button type="dashed" className='bg-red-500 text-white hover:bg-sky-500'>Delete Brand</Button></>
+      render: (category) => (
+        <>
+          <Button type="dashed" className="text-gray-800" size="large" onClick={() => handleEditClick(category)}>
+            Edit Category
+          </Button>
+          <Button type="dashed" className="text-red-500" size="large" style={{ marginLeft: '10px' }}>
+            Delete Category
+          </Button>
+        </>
+      ),
     },
   ];
-
 
   return (
     <div>
       <h3 className="font-bold text-2xl px-2">View Category List</h3>
-     <div className='mx-auto'>
-     <Table scroll={{
-        x: 1300, // Horizontal scroll
-        y: 500   // Vertical scroll height
-      }} loading={isLoading} pagination={false} dataSource={tableData} columns={columns} />;
-     </div>
+      <div className="mx-auto">
+        <div className="overflow-x-auto w-full">
+          <Table
+            loading={isLoading}
+            pagination={false}
+            dataSource={tableData}
+            columns={columns}
+            rowKey="id" // Make sure to have a unique key for each row
+          />
+        </div>
+      </div>
+
+      {/* Edit Category Modal */}
+      <Modal
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        onOk={handleSave}
+        okText="Save"
+      >
+        <EditCategoryForm previousCategoryValue={editingCategory} />
+      </Modal>
     </div>
-  )
+  );
 }
 
-export default page
+export default Page;

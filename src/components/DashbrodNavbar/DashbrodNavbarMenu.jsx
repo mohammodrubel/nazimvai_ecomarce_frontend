@@ -11,6 +11,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   UserOutlined,
+  ProductOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 
@@ -52,6 +53,19 @@ const menuItems = [
       </div>
     ),
     children: [
+      {
+        key: 'products',
+        label: (
+          <div className="transition-transform duration-300 hover:translate-x-2 flex items-center">
+            <div className="mr-2">
+              <ProductOutlined style={{ fontSize: '18px', color: '#2CB1EC' }}  />
+            </div>
+            <Link href="/dashboard/products" className="font-bold text-gray-600">
+              All Product
+            </Link>
+          </div>
+        ),
+      },
       {
         key: 'addNewProduct',
         label: (

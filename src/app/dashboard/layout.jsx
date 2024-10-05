@@ -38,7 +38,7 @@ const Page = ({ children }) => {
           <div
             style={{
               padding: 24,
-              height: '100vh',
+              height: 'auto',
               background: 'white',
             }}
           >

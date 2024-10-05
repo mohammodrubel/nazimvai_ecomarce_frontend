@@ -1,8 +1,8 @@
 "use client";
 import { Input, Button, Form, Row, message, Upload } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { useAddNewCategoryMutation } from '@/lib/fetchers/Category/CategoryApi';
+import { useUpdateCategoryMutation } from '@/lib/fetchers/Category/CategoryApi';
 import { toast } from 'sonner';
 
 const getBase64 = (img, callback) => {
@@ -11,11 +11,11 @@ const getBase64 = (img, callback) => {
     reader.readAsDataURL(img);
 };
 
-function Page() {
+function EditCategoryForm({ previousCategoryValue }) {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState(null);
-    const [addNewCategory, { isLoading, isError, data: categoryData }] = useAddNewCategoryMutation();
+    const [imageUrl, setImageUrl] = useState(previousCategoryValue?.image || null); // Show previous image if exists
+    const [updateCategory, { isLoading, isError, data: categoryData }] = useUpdateCategoryMutation();
 
     const beforeUpload = (file) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -36,40 +36,47 @@ function Page() {
         return false; // Prevent auto upload
     };
 
+    const handleRemoveImage = () => {
+        setImageUrl(null);
+        setFile(null); // Clear the file if the user removes the image
+    };
+
     const onSubmit = async (values) => {
-        if (!file) {
-            message.error('Please upload an image.');
-            return;
-        }
         const myData = {
             name: values.name,
         };
         const formData = new FormData();
-        formData.append('file', file);
+        if (file) {
+            formData.append('file', file);
+        }
         formData.append('data', JSON.stringify(myData));
 
         try {
-            await addNewCategory(formData);
+            await updateCategory({id:previousCategoryValue._id,data:formData}).unwrap(); // Handle the promise
             if (categoryData?.success) {
                 toast.success(categoryData.message);
             }
         } catch (error) {
-            toast.error("Failed to create category");
+            toast.error("Failed to update category");
         }
     };
 
-    const uploadButton = (
-        <Button style={{ border: 0, background: 'none' }} type="button">
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </Button>
-    );
+    useEffect(() => {
+        if (isError) {
+            toast.error("Error occurred while updating category");
+        }
+    }, [isError]);
 
     return (
         <>
-            <h3 className="font-bold text-2xl px-2">Add New Category</h3>
+            <h3 className="font-bold text-2xl px-2">Edit Category</h3>
             <div className="md:w-[50%] mx-auto sm:w-[80%] w-[95%]">
-                <Form onFinish={onSubmit}>
+                <Form
+                    onFinish={onSubmit}
+                    initialValues={{
+                        name: previousCategoryValue?.name || "", // Prepopulate category name
+                    }}
+                >
                     <div className="mx-5 mt-5 mb-5">
                         <Row justify="center" align="middle">
                             <Upload
@@ -92,20 +99,32 @@ function Page() {
                                         className="border"
                                     />
                                 ) : (
-                                    uploadButton
+                                    <Button style={{ border: 0, background: 'none' }} type="button">
+                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                        <div style={{ marginTop: 8 }}>Upload</div>
+                                    </Button>
                                 )}
                             </Upload>
+                            {imageUrl && (
+                                <Button
+                                    type="link"
+                                    onClick={handleRemoveImage}
+                                    style={{ marginTop: 10, color: 'red' }}
+                                >
+                                    Remove Image
+                                </Button>
+                            )}
                         </Row>
                     </div>
                     <Form.Item
                         name="name"
-                        rules={[{ required: true, message: 'Please input category name!' }]}
+                        rules={[{ required: true, message: 'Please input your category name!' }]}
                     >
-                        <Input size="large" placeholder="Create Category Name" />
+                        <Input size="large" placeholder="Category Name" />
                     </Form.Item>
                     <Form.Item className="text-center">
                         <Button loading={isLoading} type="dashed" size="large" htmlType="submit">
-                            Create New Category
+                            Update Category
                         </Button>
                     </Form.Item>
                 </Form>
@@ -114,4 +133,4 @@ function Page() {
     );
 }
 
-export default Page;
+export default EditCategoryForm;

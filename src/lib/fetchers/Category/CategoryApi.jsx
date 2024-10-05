@@ -20,8 +20,17 @@ export const CategoryApi = RootApi.injectEndpoints({
       }),
       invalidatesTags:['category'],
     }),
-   
+    updateCategory: builder.mutation({
+      query: (info) => {
+        return {
+          url: `/category/update-single-category/${info.id}`, 
+          method: 'PUT',
+          body: info.data, 
+        };
+      },
+      invalidatesTags: ['category'], 
+    }),
   }),
 });
 
-export const {useAddNewCategoryMutation,useFetchAllCategoryQuery,useFetchSingleCategoryQuery} = CategoryApi;
+export const {useUpdateCategoryMutation,useAddNewCategoryMutation,useFetchAllCategoryQuery,useFetchSingleCategoryQuery} = CategoryApi;

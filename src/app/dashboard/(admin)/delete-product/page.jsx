@@ -3,6 +3,7 @@ import Error from '@/components/Error/Error';
 import Loading from '@/components/Loading/Loading';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
 import { Table, Button, Popconfirm } from 'antd';
+import Image from 'next/image';
 
 export default function Page() {
   const { isLoading, isError, data } = useFetchAllProductsQuery([]);
@@ -36,6 +37,18 @@ export default function Page() {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: 'Image',
+      dataIndex: 'images',
+      key: 'image',
+      render: (images) => {
+        return images && images.length > 0 ? (
+          <Image src={images[0]} alt="Product" width={100} height={100} />
+        ) : (
+          <span>No image found</span>
+        );
+      },
     },
     {
       title: 'Brand Name',
@@ -74,6 +87,7 @@ export default function Page() {
       ),
     },
   ];
+  
 
   return (
     <div className="mb-10">
