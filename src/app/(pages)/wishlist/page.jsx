@@ -5,8 +5,10 @@ import { Table as AntdTable, Image as AntdImage, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { removeWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice'; // Adjust the path if necessary
 import { addProduct } from '@/lib/fetchers/Product/ProductSlice';
+import { toast } from 'sonner';
 
 function Page() {
+    const user = useSelector((state)=> state?.auth?.user?.email)
     const { wishlist } = useSelector((state) => state?.wishlist) || {}; 
     const dispatch = useDispatch();
 
@@ -15,7 +17,11 @@ function Page() {
     };
 
     const handleAddToCart = (product) => {
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
     };
 
     const columns = [

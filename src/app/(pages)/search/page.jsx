@@ -14,6 +14,7 @@ import Loading from '@/components/Loading/Loading';
 import Error from '@/components/Error/Error';
 
 function Page() {
+    const user = useSelector((state)=> state?.auth?.user?.email)
     const searchParams = useSearchParams();
     const query = searchParams.toString();
     const decodedQuery = decodeURIComponent(query.split('=')[0]).replace(/\+/g, ' ');
@@ -41,7 +42,12 @@ function Page() {
 
 
     const handelAddToCart = (product) => {
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
+        
 
     }
     const handlePageChange = (page) => {
@@ -85,7 +91,11 @@ function Page() {
     }
 
     const increment = (product) => {
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
     }
     const decrement = (product) => {
         dispatch(decrementQuantity(product))

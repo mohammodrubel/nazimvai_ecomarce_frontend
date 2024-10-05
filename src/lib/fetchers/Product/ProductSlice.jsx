@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { toast } from 'sonner'
+import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'sonner';
 
 const initialState = {
     cartItem: localStorage.getItem("cartItem")
@@ -7,7 +7,7 @@ const initialState = {
         : [],
 }
 
-console.log(initialState.cartItem)
+
 
 export const ProductSlice = createSlice({
     name: 'cart',
@@ -79,9 +79,7 @@ export const ProductSlice = createSlice({
             }
         },
 
-
-        deleteFromCart : (state, action) => {
-            console.log(action)
+        deleteFromCart: (state, action) => {
             const existingProduct = state.cartItem.find(item => item._id === action.payload.key); 
             if (existingProduct) {
                 state.cartItem = state.cartItem.filter(item => item._id !== action.payload.key); 
@@ -89,10 +87,8 @@ export const ProductSlice = createSlice({
                 toast.warning(`${existingProduct.name} has been removed from your cart`);
             }
         }
-
-
     }
-})
+});
 
-export const { addProduct, decrementQuantity, updateQuantity,deleteFromCart } = ProductSlice.actions
-export default ProductSlice.reducer
+export const { addProduct, decrementQuantity, updateQuantity, deleteFromCart } = ProductSlice.actions;
+export default ProductSlice.reducer;

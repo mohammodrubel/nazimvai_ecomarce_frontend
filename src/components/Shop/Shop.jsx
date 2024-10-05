@@ -68,15 +68,30 @@ function Shop() {
     };
 
     const handelAddToCart = (product) => {
-        dispatch(addProduct(product));
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
+     
     };
 
     const increment = (product) => {
-        dispatch(addProduct(product));
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
+       
     };
 
     const decrement = (product) => {
-        dispatch(decrementQuantity(product));
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(decrementQuantity(product));
+        }
+        
     };
 
     const handlePageChange = (page) => {

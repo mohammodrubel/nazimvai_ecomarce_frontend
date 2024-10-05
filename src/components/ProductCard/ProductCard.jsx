@@ -16,6 +16,7 @@ import { toggleWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice';
 
 
 function ProductCard() {
+    const user = useSelector((state)=> state?.auth?.user?.email)
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(8)
     const currentCart = useSelector((state) => state?.products?.cartItem)
@@ -25,23 +26,26 @@ function ProductCard() {
         {name:'sort',value:'desc'}
     ]);
     let totalQuantity = data?.meta?.total
-
     const [open, setOpen] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [title, setTitle] = useState('');
     const [selectImage, setSelectImage] = useState(0);
     const [singleProductData, setSingleProductData] = useState({})
     const dispatch = useDispatch()
+    
 
   const wishlistHandeler = (product)=>{
     dispatch(toggleWishlistItem(product))
   }
 
 
-    const handelAddToCart = (product) => {
-        dispatch(addProduct(product))
-
+  const handelAddToCart = (product) => {
+    if (!user) {
+        toast.warning('Please log in to your account to add products to your cart.');
+    } else {
+        dispatch(addProduct(product));
     }
+};
     const handlePageChange = (page) => {
         setPage(page);
     };
@@ -83,10 +87,20 @@ function ProductCard() {
     }
 
     const increment = (product) => {
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
+     
     }
     const decrement = (product) => {
-        dispatch(decrementQuantity(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(decrementQuantity(product))
+        }
+       
     }
    
 

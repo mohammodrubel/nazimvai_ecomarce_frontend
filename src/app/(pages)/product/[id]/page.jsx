@@ -13,9 +13,11 @@ import { toggleWishlistItem } from "@/lib/fetchers/wishlist/wishlistSlice";
 import { Tabs } from 'antd';
 import style from './product.module.css'
 import Slider from "react-slick/lib/slider";
+import { toast } from "sonner";
 
 
 function Page() {
+  const user = useSelector((state) => state?.auth?.user?.email)
   const { id } = useParams();
   const currentCart = useSelector((state) => state?.products?.cartItem);
   const { isLoading, isError, data } = useFetchSingleProductQuery(id);
@@ -39,11 +41,20 @@ function Page() {
   }, [data]);
 
   const increment = (product) => {
-    dispatch(addProduct(product));
+    if (!user) {
+      toast.warning('Please log in to your account to add products to your cart.');
+    } else {
+      dispatch(addProduct(product));
+    }
+
   };
 
   const decrement = (product) => {
-    dispatch(decrementQuantity(product));
+    if (!user) {
+      toast.warning('Please log in to your account to add products to your cart.');
+    } else {
+      dispatch(decrementQuantity(product));
+    }
   };
 
   let content;
@@ -185,7 +196,7 @@ function Page() {
   }
   if (!productLoading && !productError && allProductData.data.length > 0) {
     const categoryWiseData = allProductData.data.filter((item, index) => item?.category._id === mainData?.category._id)
-     
+
     product = categoryWiseData?.map((item, index) => <div key={index}>
       <div className={style.imgContainer}>
         {item?.images?.slice(0, 2).map((img, imgIndex) => (
@@ -211,7 +222,7 @@ function Page() {
 
 
   const onChange = (key) => {
-   
+
   };
 
   return <>

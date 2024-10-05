@@ -14,6 +14,7 @@ import style from '../../../components/ProductCard/ProductCard.module.css'
 import { useFetchAllFeatchersProductsQuery } from '@/lib/fetchers/homeProduct/homeProduct';
 
 function Page() {
+    const user = useSelector((state)=> state?.auth?.user?.email)
     const dispatch = useDispatch();
     const currentCart = useSelector((state) => state?.products?.cartItem);
     const { id } = useParams();
@@ -32,8 +33,11 @@ function Page() {
     };
 
     const handelAddToCart = (product) => {
-       
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
     }
     let content = null;
 
@@ -72,10 +76,20 @@ function Page() {
     }
 
     const increment = (product) => {
-        dispatch(addProduct(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(addProduct(product));
+        }
+       
     }
     const decrement = (product) => {
-        dispatch(decrementQuantity(product))
+        if (!user) {
+            toast.warning('Please log in to your account to add products to your cart.');
+        } else {
+            dispatch(decrementQuantity(product))
+        }
+        
     }
     const handlePageChange = (page) => {
         setPage(page);
