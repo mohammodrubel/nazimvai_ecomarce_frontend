@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { Upload, Button, Form, Input, InputNumber, Select, Row, Modal } from "antd";
-import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Upload, Button, Form, Input, InputNumber, Select, Row, Modal, Radio } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "sonner";
 import { useAddNewProductMutation } from "@/lib/fetchers/Product/ProductApi";
 import { useFetchAllBrandQuery } from "@/lib/fetchers/Brand/BrandApi";
@@ -12,6 +12,7 @@ const Page = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
+  const [marketStatus, setMarketStatus] = useState("onMarket"); // Default value
 
   const { data: brandData } = useFetchAllBrandQuery();
   const { data: categoryData } = useFetchAllCategoryQuery();
@@ -40,7 +41,7 @@ const Page = () => {
     fileList.forEach((file) => {
       formData.append("files", file.originFileObj);
     });
-    formData.append("data", JSON.stringify(values));
+    formData.append("data", JSON.stringify({ ...values, isOnMarketStatus: marketStatus }));
 
     try {
       await addNewProduct(formData).unwrap();
@@ -79,7 +80,7 @@ const Page = () => {
               {fileList.length >= 3 ? null : uploadButton}
             </Upload>
             <Modal
-              visible={previewVisible}
+              open={previewVisible} // Replaced 'visible' with 'open'
               title={previewTitle}
               footer={null}
               onCancel={() => setPreviewVisible(false)}
@@ -109,6 +110,13 @@ const Page = () => {
             <Select options={brandOption} placeholder="Brand" />
           </Form.Item>
         </div>
+        
+        <Form.Item name="isOnMarketStatus">
+          <Radio.Group onChange={(e) => setMarketStatus(e.target.value)} value={marketStatus}>
+            <Radio value={"pre-order"}>Is this a pre-order product?</Radio>
+            <Radio value={"onMarket"}>Regular product</Radio>
+          </Radio.Group>
+        </Form.Item>
 
         <Form.Item name="desc" rules={[{ required: true, message: "Please enter the description" }]}>
           <Input.TextArea rows={4} placeholder="Description" />
