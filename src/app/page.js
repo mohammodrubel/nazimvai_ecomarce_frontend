@@ -1,6 +1,7 @@
 import Banner from "@/components/Banner/Banner";
 import Brand from "@/components/Brand/Brand";
 import Category from "@/components/Category/Category";
+import PreOrder from "@/components/PreOrder/PreOrder";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import RecentProduct from "@/components/ProductCard/RecentProduct";
 import SkinCareBanner from "@/components/SkinCareBanner/SkinCareBanner";
@@ -18,6 +19,7 @@ export default function Home() {
       <RecentProduct />
       <Brand />
       <Subscribe />
+      <PreOrder/>
     </ReduxProvider>
   );
 }

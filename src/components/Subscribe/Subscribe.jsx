@@ -16,8 +16,9 @@ function Subscribe() {
           className=" sm:w-full p-2 border border-gray-300 rounded-l-md focus:outline-none"
         />
         <button
+        style={{background:'white'}}
           type="submit"
-          className="bg-blue-600 text-white p-2 rounded-r-md hover:bg-blue-700 transition-colors"
+          className=" text-gray-800 p-2 rounded-r-md hover:bg-blue-700 transition-colors"
         >
           Subscribe
         </button>
