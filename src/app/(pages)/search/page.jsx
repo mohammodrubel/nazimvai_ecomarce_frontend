@@ -1,17 +1,17 @@
 "use client";
+import Error from '@/components/Error/Error';
+import Loading from '@/components/Loading/Loading';
 import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
-import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
-import { InputNumber, Button, Input, Modal, Pagination } from 'antd';
-import Image from 'next/image';
-import style from './search.module.css';
-import { toast } from 'sonner';
-import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
 import { addProduct, decrementQuantity } from '@/lib/fetchers/Product/ProductSlice';
 import { toggleWishlistItem } from '@/lib/fetchers/wishlist/wishlistSlice';
-import Loading from '@/components/Loading/Loading';
-import Error from '@/components/Error/Error';
+import { Button, InputNumber, Modal, Pagination } from 'antd';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'sonner';
+import style from './search.module.css';
 
 function Page() {
     const user = useSelector((state)=> state?.auth?.user?.email)

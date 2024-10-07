@@ -97,7 +97,7 @@ function RecentProduct() {
         content = <Error text="No Data Found" />;
     } else {
         content = data?.data?.slice(0, 8).map((item, index) => (
-            <div key={index}>
+            <div key={index} className="relative">
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
                         <div key={imgIndex} className={style.img_single}>
@@ -117,6 +117,10 @@ function RecentProduct() {
                     <h4 className='font-medium p-2'>In Stock: {item?.in_stock}</h4>
                 </div>
                 <h3 className='font-bold text-[20px] text-gray-600 text-center'>{item?.name}</h3>
+                {item?.isOnMarketStatus === 'pre-order' && <div className="absolute cursor-pointer right-2 top-0 w-[70px] h-[70px] rounded-full bg-white flex flex-col justify-center items-center text-gray-500 font-bold shadow-lg">
+                    <p>Up</p>
+                    <p>Coming</p>
+                </div>}
             </div>
         ));
     }

@@ -109,7 +109,7 @@ function Shop() {
         content = <Error text="No Data Found" />;
     } else {
         content = productData?.data?.map((item, index) => (
-            <div key={index} className='mt-5 mx-auto'>
+            <div key={index} className='mt-5 mx-auto relative'>
                 <div className={style.imgContainer}>
                     {item?.images?.slice(0, 2).map((img, imgIndex) => (
                         <div key={imgIndex} className={style.img_single}>
@@ -133,6 +133,10 @@ function Shop() {
                     <h4 className='font-medium p-2'>In Stock: {item?.in_stock}</h4>
                 </div>
                 <h3 className='font-bold text-[20px] text-gray-600 text-center'>{item?.name}</h3>
+                {item?.isOnMarketStatus === 'pre-order' && <div className="absolute cursor-pointer right-2 top-0 w-[70px] h-[70px] rounded-full bg-white flex flex-col justify-center items-center text-gray-500 font-bold shadow-lg">
+                    <p>Up</p>
+                    <p>Coming</p>
+                </div>}
             </div>
         ));
     }

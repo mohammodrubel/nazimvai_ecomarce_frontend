@@ -58,7 +58,7 @@ const Banner = () => (
                         ))}
                     </Carousel>
                 </div>
-                <div className=" md:col-span-4 col-span-12">
+                <div className="md:col-span-4 col-span-12">
                     <div className="relative">
                         <div className={`${styles.overlay} flex justify-center items-center`}>
                             <h1 className="text-white text-left text-4xl">Discount {brand1.percent}</h1>
