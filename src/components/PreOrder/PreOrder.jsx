@@ -6,7 +6,7 @@ import { useFetchAllProductsQuery } from '@/lib/fetchers/Product/ProductApi';
 import Loading from '../Loading/Loading';
 import Error from '../Error/Error';
 import Image from 'next/image';
-import style from './PreOrder.module.css';
+import style from './preorder.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { addProduct } from '@/lib/fetchers/Product/ProductSlice';

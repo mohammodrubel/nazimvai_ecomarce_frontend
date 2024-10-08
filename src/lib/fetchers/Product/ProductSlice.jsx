@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'sonner';
 
 const initialState = {
-    cartItem: localStorage.getItem("cartItem")
+    cartItem: typeof window !== 'undefined' && localStorage.getItem("cartItem")
         ? JSON.parse(localStorage.getItem("cartItem"))
         : [],
-}
+};
 
 
 

@@ -1,14 +1,13 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Input, Drawer, Menu, Dropdown } from 'antd';
-import { UserOutlined, MenuOutlined } from '@ant-design/icons';
-import style from './Navigation.module.css';
+import { logout } from '@/lib/fetchers/Authintication/authSlice';
+import { Dropdown, Input, Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import NavbarUserInformation from '../userActivity/NavbarUserInformation';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '@/lib/fetchers/Authintication/authSlice';
+import NavbarUserInformation from '../userActivity/NavbarUserInformation';
 import CategorySubMenu from './CategorySubMenu';
+import style from './Navigation.module.css';
 import ShopSubMenu from './ShopSubMenu';
 
 const { Search } = Input;
@@ -59,9 +58,9 @@ function Navigation() {
       <Menu.Item key="reset-password">
         <a href="/reset-password">Reset Password</a>
       </Menu.Item>
-      <Menu.Item key="dashboard">
+      {user?.role === 'admin' && <Menu.Item key="dashboard">
         <a href="/dashboard">Dashboard</a>
-      </Menu.Item>
+      </Menu.Item>}
     </Menu>
   );
 

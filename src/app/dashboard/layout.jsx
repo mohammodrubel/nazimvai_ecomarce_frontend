@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
-import { Layout, Menu } from 'antd';
 import DashbrodNavbar from '@/components/DashbrodNavbar/DashbrodNavbar';
 import menuItems from '@/components/DashbrodNavbar/DashbrodNavbarMenu';
+import { Layout, Menu } from 'antd';
+import { useSelector } from 'react-redux';
 import { Toaster } from 'sonner';
 
 const { Header, Content, Sider } = Layout;
 
 const Page = ({ children }) => {
+  const id = useSelector((state)=> state?.auth?.user?.userId)
+
+    
   return (
     <Layout>
       <Sider

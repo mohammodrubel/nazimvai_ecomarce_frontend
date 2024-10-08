@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'sonner';
 
+
 const initialState = {
-    wishlist: localStorage.getItem("wishlist")
+    wishlist: typeof window !== 'undefined' && localStorage.getItem("wishlist")
         ? JSON.parse(localStorage.getItem("wishlist"))
         : [],
 };

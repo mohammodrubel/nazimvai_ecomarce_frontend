@@ -58,7 +58,7 @@ function Brand() {
         content = <Error errorText="No Data Found" />
     }
     if (!isLoading && !isError && data?.data?.length > 0) {
-        content = data?.data?.map((item, index) => <div className="m-16  mx-auto mt-5  text-center">
+        content = data?.data?.map((item, index) => <div key={item?.name} className="m-16  mx-auto mt-5  text-center">
             <Image className="text-center" width={200} height={200} src={item?.image} />
             <p>{item?.name}</p>
         </div>)

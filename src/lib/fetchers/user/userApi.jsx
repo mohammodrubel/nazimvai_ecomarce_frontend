@@ -6,6 +6,7 @@ export const userApi = RootApi.injectEndpoints({
       query: () => '/user/get-all-users',
       providesTags:['user']
     }),
+
    
   }),
 });
